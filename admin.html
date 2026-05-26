@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin-Bereich | Bremen stoppt den Mietennotstand!</title>
+    
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --font-sans: 'Inter', sans-serif;
+            --font-display: 'Plus Jakarta Sans', sans-serif;
+        }
+        body {
+            font-family: var(--font-sans);
+        }
+        .font-display {
+            font-family: var(--font-display);
+        }
+        
+        /* Custom Zinc/Primary styling tokens */
+        .bg-primary-50 { background-color: #fef2f2; }
+        .bg-primary-100 { background-color: #fee2e2; }
+        .bg-primary-500 { background-color: #e53e3e; }
+        .bg-primary-600 { background-color: #c53030; }
+        .text-primary-500 { color: #e53e3e; }
+        .text-primary-600 { color: #c53030; }
+        .text-primary-700 { color: #9b2c2c; }
+        .border-primary-100 { border-color: #fee2e2; }
+        .border-primary-200 { border-color: #fca5a5; }
+        .border-primary-500 { border-color: #e53e3e; }
+        .shadow-primary-200 { shadow-color: rgba(229, 62, 62, 0.2); }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between text-slate-800 antialiased selection:bg-primary-100 selection:text-primary-700">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+    <!-- ==========================================
+         LOGIN SCREEN CARD
+         ========================================== -->
+    <main id="login-container" class="flex-grow flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-3xl border border-slate-100 shadow-2xl p-8 space-y-6 transition-all duration-300 scale-100">
+            
+            <div class="text-center space-y-2">
+                <span class="inline-flex px-3 py-1 rounded-full text-[10px] font-bold bg-slate-900 text-white uppercase tracking-wider">Interner Bereich</span>
+                <h1 class="font-display font-extrabold text-2xl text-slate-900">Admin-Login</h1>
+                <p class="text-sm text-slate-500">Bitte melden Sie sich an, um Kampagnendaten zu bearbeiten.</p>
+            </div>
+            
+            <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
+                <div class="space-y-1">
+                    <label for="username" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Benutzername</label>
+                    <input type="text" id="username" required autocomplete="username" class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 text-sm transition-all" placeholder="admin">
+                </div>
+                
+                <div class="space-y-1">
+                    <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Passwort</label>
+                    <input type="password" id="password" required autocomplete="current-password" class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 text-sm transition-all" placeholder="••••••••">
+                </div>
+                
+                <div id="login-error" class="hidden text-xs text-primary-600 bg-primary-50 border border-primary-100 rounded-lg p-3 font-semibold flex items-center gap-1.5 animate-[fadeIn_0.3s_ease-out]">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <span>Benutzername oder Passwort ist ungültig.</span>
+                </div>
+                
+                <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-white bg-primary-500 hover:bg-primary-600 active:scale-98 shadow-lg shadow-primary-200/50 transition-all text-sm cursor-pointer">
+                    Anmelden
+                </button>
+            </form>
+            
+            <div class="text-center pt-2">
+                <a href="index.html" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                    Zurück zur Website
+                </a>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- ==========================================
+         ADMIN PANEL DASHBOARD
+         ========================================== -->
+    <div id="dashboard-container" class="hidden flex-grow flex flex-col">
+        
+        <!-- Header -->
+        <header class="bg-slate-900 text-white border-b border-slate-800 py-4 sticky top-0 z-40 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="font-display font-extrabold text-lg sm:text-xl text-white">Mietennotstand Admin</span>
+                </div>
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <a href="index.html" target="_blank" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        <span class="hidden sm:inline">Vorschau</span>
+                    </a>
+                    <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-primary-500/10 text-primary-500 hover:bg-primary-500/20 active:scale-95 transition-all flex items-center gap-1 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        Abmelden
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            
+            <!-- Dashboard Welcome Banner -->
+            <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="space-y-2">
+                    <h2 class="font-display font-extrabold text-2xl sm:text-3xl">Willkommen im Kontrollzentrum!</h2>
+                    <p class="text-sm text-slate-400 max-w-xl">
+                        Hier können Sie den aktuellen Stand der Unterschriften anpassen sowie Neuigkeiten hinzufügen oder löschen. Änderungen werden sofort in Ihrem Browser gespeichert und auf der Hauptseite aktiv.
+                    </p>
+                </div>
+                <div>
+                    <button onclick="resetToDefaults()" class="w-full md:w-auto px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-98 text-xs font-bold text-white border border-slate-700 shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H18"/></svg>
+                        Standardwerte wiederherstellen
+                    </button>
+                </div>
+            </div>
+
+            <!-- Two Columns Dashboard Sections -->
+            <div class="grid lg:grid-cols-12 gap-8">
+                
+                <!-- Counter Administration Column (5 cols) -->
+                <div class="lg:col-span-5 space-y-8">
+                    
+                    <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-6">
+                        <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                            <span class="p-2 bg-primary-50 rounded-xl text-primary-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </span>
+                            <h3 class="font-display font-bold text-lg text-slate-900">Unterschriften-Zähler</h3>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label for="input-current" class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Gesammelt</label>
+                                    <input type="number" id="input-current" required min="0" class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 text-sm transition-all" placeholder="z.B. 3482">
+                                </div>
+                                <div class="space-y-1">
+                                    <label for="input-target" class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Zielwert</label>
+                                    <input type="number" id="input-target" required min="1" class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 text-sm transition-all" placeholder="z.B. 5000">
+                                </div>
+                            </div>
+                            
+                            <!-- Real-time Preview Progress Bar -->
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-2">
+                                <div class="flex justify-between text-xs font-semibold text-slate-500">
+                                    <span>Vorschau Fortschritt</span>
+                                    <span id="preview-pct" class="text-primary-500 font-extrabold">70%</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                    <div id="preview-bar" class="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full transition-all duration-300" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                            
+                            <button onclick="saveCounter()" class="w-full py-3 rounded-xl font-bold text-white bg-primary-500 hover:bg-primary-600 active:scale-98 shadow-md shadow-primary-200/50 transition-all text-sm cursor-pointer">
+                                Zähler speichern
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Statistics / Info box -->
+                    <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-4">
+                        <h4 class="font-display font-bold text-base text-slate-900">💡 Wichtiger Hinweis zur Veröffentlichung</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Da diese Seite auf GitHub Pages (einem statischen Hosting) veröffentlicht ist, werden die Daten lokal im <strong>localStorage Ihres Browsers</strong> gespeichert. 
+                        </p>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Um die Änderungen anderen Personen zu zeigen, können Sie Ihre veränderten Daten exportieren oder zukünftig ein Backend wie <strong>Firebase</strong> integrieren, mit dem wir diesen Zähler in Echtzeit für jeden synchronisieren.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- News Articles Composer & Manager Column (7 cols) -->
+                <div class="lg:col-span-7 space-y-8">
+                    
+                    <!-- Composer (Add news) -->
+                    <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-6">
+                        <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                            <span class="p-2 bg-primary-50 rounded-xl text-primary-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                            </span>
+                            <h3 class="font-display font-bold text-lg text-slate-900">Neuen News-Artikel verfassen</h3>
+                        </div>
+                        
+                        <form id="news-form" class="space-y-4" onsubmit="addNewsArticle(event)">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label for="news-category" class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Kategorie</label>
+                                    <select id="news-category" required class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 text-sm transition-all">
+                                        <option value="Kampagne" selected>Kampagne</option>
+                                        <option value="Presse">Presse</option>
+                                        <option value="Termin">Termin</option>
+                                        <option value="Aktion">Aktion</option>
+                                        <option value="Sonstiges">Sonstiges</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-1">
+                                    <label for="news-date" class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Datum</label>
+                                    <input type="text" id="news-date" required class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 text-sm transition-all" placeholder="z.B. 26. Mai oder Heute">
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-1">
+                                <label for="news-title" class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Titel</label>
+                                <input type="text" id="news-title" required class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 text-sm transition-all" placeholder="Titel des Beitrags">
+                            </div>
+                            
+                            <div class="space-y-1">
+                                <label for="news-content" class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Teaser-Text (Inhalt)</label>
+                                <textarea id="news-content" required rows="4" class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 text-sm transition-all resize-y" placeholder="Kurze Inhaltsangabe für den Newsfeed..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-white bg-primary-500 hover:bg-primary-600 active:scale-98 shadow-md shadow-primary-200/50 transition-all text-sm cursor-pointer">
+                                Artikel veröffentlichen
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Manager (List / Delete news) -->
+                    <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-6">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <div class="flex items-center gap-2">
+                                <span class="p-2 bg-primary-50 rounded-xl text-primary-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                                </span>
+                                <h3 class="font-display font-bold text-lg text-slate-900">Aktuelle News-Einträge</h3>
+                            </div>
+                            <span id="news-badge-count" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-slate-100 text-slate-700">0</span>
+                        </div>
+                        
+                        <!-- List container -->
+                        <div class="divide-y divide-slate-100" id="admin-news-list">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-slate-900 text-slate-500 text-center py-6 border-t border-slate-800 text-xs mt-12">
+            <p>&copy; 2026 Bremen stoppt den Mietennotstand! Internes Administrations-Kontrollzentrum.</p>
+        </footer>
+
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC
+         ========================================== -->
+    <script>
+        // Dummy credentials
+        const DUMMY_USER = "admin";
+        const DUMMY_PASS = "admin123";
+
+        // Vordefinierte Standardwerte
+        const STANDARD_COUNTER = { current: 3482, target: 5000 };
+        const STANDARD_NEWS = [
+            {
+                id: "news-1",
+                category: "Presse",
+                title: "Medienschau zur Vorstellung des Bürgerantrags",
+                content: "„Wer schon länger in Bremen oder Bremerhaven zur Miete wohnt, hat diese Entwicklung womöglich am eigenen Leib erfahren...“ – Lesen Sie die Berichterstattung der lokalen Medien.",
+                date: "Vor kurzem"
+            },
+            {
+                id: "news-2",
+                category: "Kampagne",
+                title: "Wir veröffentlichen den Bürgerantrag zum Mietennotstand",
+                content: "Wir starten offiziell mit der Unterschriftensammlung! Den kompletten Antragstext und alle rechtlichen Details findet ihr direkt auf unserer Forderungsseite.",
+                date: "18. Mai"
+            },
+            {
+                id: "news-3",
+                category: "Termin",
+                title: "Pressekonferenz zum Kampagnenstart",
+                content: "Am 18.05. startet die Kampagne um 10:00 Uhr mit einer Pressekonferenz im KARLS Gästezimmer. Wir stellen uns den Fragen der Journalist*innen und erläutern unsere Ziele.",
+                date: "18. Mai"
+            }
+        ];
+
+        // Toast notifications system
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            toast.className = `p-4 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 border bg-white text-slate-800 animate-[slideIn_0.3s_ease-out]`;
+            
+            let icon = '';
+            if (type === 'success') {
+                toast.classList.add('border-emerald-200');
+                icon = `<svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+            } else if (type === 'error') {
+                toast.classList.add('border-primary-200');
+                icon = `<svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+            } else {
+                toast.classList.add('border-blue-200');
+                icon = `<svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+            }
+
+            toast.innerHTML = `
+                ${icon}
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            // Animate fade out and remove
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'scale-95', 'transition-all', 'duration-300');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Check login state
+        function checkAuthState() {
+            const isLoggedIn = sessionStorage.getItem('admin_logged_in') === 'true';
+            const loginSection = document.getElementById('login-container');
+            const dashboardSection = document.getElementById('dashboard-container');
+
+            if (isLoggedIn) {
+                loginSection.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+                loadDashboardData();
+            } else {
+                loginSection.classList.remove('hidden');
+                dashboardSection.classList.add('hidden');
+            }
+        }
+
+        // Handle Login
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const errorBox = document.getElementById('login-error');
+
+            if (user === DUMMY_USER && pass === DUMMY_PASS) {
+                errorBox.classList.add('hidden');
+                sessionStorage.setItem('admin_logged_in', 'true');
+                showToast("Erfolgreich angemeldet!");
+                checkAuthState();
+            } else {
+                errorBox.classList.remove('hidden');
+                showToast("Anmeldung fehlgeschlagen!", "error");
+            }
+        }
+
+        // Handle Logout
+        function handleLogout() {
+            sessionStorage.removeItem('admin_logged_in');
+            showToast("Erfolgreich abgemeldet!", "info");
+            checkAuthState();
+        }
+
+        // Load data on dashboard
+        function loadDashboardData() {
+            // 1. Zähler laden
+            let counterData = localStorage.getItem('mietennotstand_counter');
+            if (!counterData) {
+                counterData = STANDARD_COUNTER;
+                localStorage.setItem('mietennotstand_counter', JSON.stringify(counterData));
+            } else {
+                counterData = JSON.parse(counterData);
+            }
+            
+            const currentInput = document.getElementById('input-current');
+            const targetInput = document.getElementById('input-target');
+            currentInput.value = counterData.current;
+            targetInput.value = counterData.target;
+            
+            updatePreviewCounter();
+
+            // Setup input change event listeners
+            currentInput.oninput = updatePreviewCounter;
+            targetInput.oninput = updatePreviewCounter;
+
+            // 2. News laden
+            renderAdminNews();
+        }
+
+        // Live calculation of preview percentage bar
+        function updatePreviewCounter() {
+            const current = parseFloat(document.getElementById('input-current').value) || 0;
+            const target = parseFloat(document.getElementById('input-target').value) || 1;
+            const previewBar = document.getElementById('preview-bar');
+            const previewPct = document.getElementById('preview-pct');
+
+            const pct = Math.min(100, Math.max(0, (current / target) * 100));
+            previewBar.style.width = `${pct}%`;
+            previewPct.innerText = `${pct.toFixed(0)}%`;
+        }
+
+        // Save Counter to LocalStorage
+        function saveCounter() {
+            const current = parseInt(document.getElementById('input-current').value);
+            const target = parseInt(document.getElementById('input-target').value);
+
+            if (isNaN(current) || current < 0) {
+                showToast("Bitte geben Sie eine gültige Anzahl gesammelter Unterschriften an.", "error");
+                return;
+            }
+            if (isNaN(target) || target <= 0) {
+                showToast("Bitte geben Sie einen gültigen Zielwert an.", "error");
+                return;
+            }
+
+            const counterData = { current, target };
+            localStorage.setItem('mietennotstand_counter', JSON.stringify(counterData));
+            showToast("Unterschriften-Zähler erfolgreich gespeichert!");
+        }
+
+        // Add news article
+        function addNewsArticle(event) {
+            event.preventDefault();
+            const category = document.getElementById('news-category').value;
+            const date = document.getElementById('news-date').value.trim();
+            const title = document.getElementById('news-title').value.trim();
+            const content = document.getElementById('news-content').value.trim();
+
+            if (!category || !date || !title || !content) {
+                showToast("Bitte füllen Sie alle Felder aus.", "error");
+                return;
+            }
+
+            let newsData = localStorage.getItem('mietennotstand_news');
+            newsData = newsData ? JSON.parse(newsData) : [];
+
+            // Add new article at the beginning of the list
+            const newArticle = {
+                id: "news-" + Date.now(),
+                category,
+                title,
+                content,
+                date
+            };
+
+            newsData.unshift(newArticle);
+            localStorage.setItem('mietennotstand_news', JSON.stringify(newsData));
+            
+            showToast("News-Artikel erfolgreich veröffentlicht!");
+            
+            // Clear inputs
+            document.getElementById('news-title').value = '';
+            document.getElementById('news-content').value = '';
+            document.getElementById('news-date').value = '';
+
+            renderAdminNews();
+        }
+
+        // Render articles in admin list
+        function renderAdminNews() {
+            let newsData = localStorage.getItem('mietennotstand_news');
+            if (!newsData) {
+                newsData = STANDARD_NEWS;
+                localStorage.setItem('mietennotstand_news', JSON.stringify(newsData));
+            } else {
+                newsData = JSON.parse(newsData);
+            }
+
+            const listContainer = document.getElementById('admin-news-list');
+            const badgeCount = document.getElementById('news-badge-count');
+            
+            badgeCount.innerText = newsData.length;
+            listContainer.innerHTML = '';
+
+            if (newsData.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="py-8 text-center text-slate-400 text-sm space-y-2">
+                        <svg class="w-8 h-8 mx-auto text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        <p class="font-semibold text-slate-500">Keine Artikel gefunden.</p>
+                        <p class="text-xs">Verfassen Sie einen neuen Beitrag im obigen Formular.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            newsData.forEach(article => {
+                const badgeColor = article.category === 'Presse' ? 'bg-amber-50 text-amber-700 border-amber-200' : article.category === 'Kampagne' ? 'bg-blue-50 text-blue-700 border-blue-200' : article.category === 'Termin' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-100 text-slate-700 border-slate-200';
+                
+                const item = document.createElement('div');
+                item.className = 'py-4 flex items-start sm:items-center justify-between gap-4';
+                item.innerHTML = `
+                    <div class="space-y-1.5 min-w-0 flex-grow">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-[9px] px-2 py-0.5 rounded-full border font-bold uppercase tracking-wider ${badgeColor}">${article.category}</span>
+                            <span class="text-xs text-slate-400 font-semibold">${article.date}</span>
+                        </div>
+                        <h4 class="font-bold text-sm text-slate-800 truncate">${article.title}</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed max-w-xl truncate">${article.content}</p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <button onclick="deleteArticle('${article.id}')" class="p-2 rounded-xl text-primary-500 hover:text-white hover:bg-primary-500 active:scale-95 transition-all cursor-pointer border border-primary-100 hover:border-primary-500">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        // Delete article
+        function deleteArticle(id) {
+            if (!confirm("Sind Sie sicher, dass Sie diesen Artikel löschen möchten? Dieser Schritt kann nicht rückgängig gemacht werden.")) {
+                return;
+            }
+
+            let newsData = localStorage.getItem('mietennotstand_news');
+            if (!newsData) return;
+            
+            newsData = JSON.parse(newsData);
+            const filteredNews = newsData.filter(article => article.id !== id);
+            
+            localStorage.setItem('mietennotstand_news', JSON.stringify(filteredNews));
+            showToast("News-Artikel gelöscht!");
+            
+            renderAdminNews();
+        }
+
+        // Reset all keys to default
+        function resetToDefaults() {
+            if (!confirm("Dadurch werden der Unterschriften-Counter und alle News-Beiträge auf die ursprünglichen Werkseinstellungen der Website zurückgesetzt. Fortfahren?")) {
+                return;
+            }
+
+            localStorage.setItem('mietennotstand_counter', JSON.stringify(STANDARD_COUNTER));
+            localStorage.setItem('mietennotstand_news', JSON.stringify(STANDARD_NEWS));
+            
+            showToast("Standardwerte erfolgreich wiederhergestellt!");
+            loadDashboardData();
+        }
+
+        // Initial check
+        window.onload = checkAuthState;
+    </script>
+</body>
+</html>

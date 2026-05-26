@@ -668,3 +668,107 @@ function checkBremenRent() {
         document.getElementById('mietcheck-result-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 }
+
+
+// ==========================================
+// 7. LOCAL STORAGE DATA PERSISTENCE & RENDERING (FOR ADMIN PANEL)
+// ==========================================
+
+const DEFAULT_NEWS = [
+    {
+        id: "news-1",
+        category: "Presse",
+        title: "Medienschau zur Vorstellung des Bürgerantrags",
+        content: "„Wer schon länger in Bremen oder Bremerhaven zur Miete wohnt, hat diese Entwicklung womöglich am eigenen Leib erfahren...“ – Lesen Sie die Berichterstattung der lokalen Medien.",
+        date: "Vor kurzem"
+    },
+    {
+        id: "news-2",
+        category: "Kampagne",
+        title: "Wir veröffentlichen den Bürgerantrag zum Mietennotstand",
+        content: "Wir starten offiziell mit der Unterschriftensammlung! Den kompletten Antragstext und alle rechtlichen Details findet ihr direkt auf unserer Forderungsseite.",
+        date: "18. Mai"
+    },
+    {
+        id: "news-3",
+        category: "Termin",
+        title: "Pressekonferenz zum Kampagnenstart",
+        content: "Am 18.05. startet die Kampagne um 10:00 Uhr mit einer Pressekonferenz im KARLS Gästezimmer. Wir stellen uns den Fragen der Journalist*innen und erläutern unsere Ziele.",
+        date: "18. Mai"
+    }
+];
+
+function initSignatureCounter() {
+    let counterData = localStorage.getItem('mietennotstand_counter');
+    
+    if (!counterData) {
+        // First load: initialize with default values
+        counterData = { current: 3482, target: 5000 };
+        localStorage.setItem('mietennotstand_counter', JSON.stringify(counterData));
+    } else {
+        counterData = JSON.parse(counterData);
+    }
+
+    const currentSpan = document.getElementById('signature-count-current');
+    const targetSpan = document.getElementById('signature-count-target');
+    const progressBar = document.getElementById('signature-progress-bar');
+
+    if (currentSpan && targetSpan && progressBar) {
+        // Format with thousand separators
+        currentSpan.innerText = Number(counterData.current).toLocaleString('de-DE');
+        targetSpan.innerText = Number(counterData.target).toLocaleString('de-DE');
+
+        // Set progress width
+        const pct = Math.min(100, Math.max(0, (counterData.current / counterData.target) * 100));
+        progressBar.style.width = `${pct}%`;
+    }
+}
+
+function initNewsFeed() {
+    let newsData = localStorage.getItem('mietennotstand_news');
+    
+    if (!newsData) {
+        // First load: initialize with default news articles
+        newsData = DEFAULT_NEWS;
+        localStorage.setItem('mietennotstand_news', JSON.stringify(newsData));
+    } else {
+        newsData = JSON.parse(newsData);
+    }
+
+    const newsContainer = document.getElementById('news-container');
+    if (!newsContainer) return;
+
+    newsContainer.innerHTML = ''; // Clear static HTML
+
+    newsData.forEach(article => {
+        const articleCard = document.createElement('article');
+        articleCard.className = 'bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow';
+        
+        articleCard.innerHTML = `
+            <div class="p-6 sm:p-8 space-y-4">
+                <span class="inline-flex px-2.5 py-1 rounded-lg bg-primary-50 text-primary-600 text-xs font-bold">${article.category}</span>
+                <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 leading-tight">
+                    ${article.title}
+                </h3>
+                <p class="text-sm text-slate-500 leading-relaxed">
+                    ${article.content}
+                </p>
+            </div>
+            <div class="p-6 border-t border-slate-50 flex items-center justify-between bg-slate-50/50">
+                <span class="text-xs text-slate-400">${article.date}</span>
+                <span class="text-xs font-bold text-primary-500 hover:text-primary-600 cursor-pointer flex items-center gap-1">
+                    Weiterlesen 
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </span>
+            </div>
+        `;
+        
+        newsContainer.appendChild(articleCard);
+    });
+}
+
+// Initialize dynamic content when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    initSignatureCounter();
+    initNewsFeed();
+});

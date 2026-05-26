@@ -175,10 +175,10 @@
                             <div class="space-y-2">
                                 <div class="flex items-center justify-between text-sm">
                                     <span class="font-semibold text-slate-500">Bisher gesammelt</span>
-                                    <span class="font-extrabold text-primary-500">3.482 / 5.000</span>
+                                    <span class="font-extrabold text-primary-500"><span id="signature-count-current">3.482</span> / <span id="signature-count-target">5.000</span></span>
                                 </div>
                                 <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full transition-all duration-1000" style="width: 70%;"></div>
+                                    <div id="signature-progress-bar" class="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full transition-all duration-1000" style="width: 70%;"></div>
                                 </div>
                                 <p class="text-xs text-slate-400">Erforderlich für den Bürgerantrag nach Art. 87 der Verfassung des Landes Bremen.</p>
                             </div>
@@ -676,7 +676,7 @@
                 </div>
                 
                 <!-- News Feed (3 Columns on Desktop, Slidable Cards on Mobile) -->
-                <div class="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto" id="news-container">
                     
                     <!-- News 1 -->
                     <article class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
@@ -866,9 +866,14 @@
             
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
                 <p>&copy; 2026 Bremen stoppt den Mietennotstand! Alle Rechte vorbehalten.</p>
-                <div class="flex gap-4">
+                <div class="flex gap-4 items-center">
                     <a href="#impressum" class="hover:text-slate-400 transition-colors">Impressum</a>
                     <a href="#" class="hover:text-slate-400 transition-colors">Datenschutz</a>
+                    <span class="text-slate-800">|</span>
+                    <a href="admin.html" class="hover:text-slate-400 hover:text-white transition-colors flex items-center gap-1 font-semibold text-slate-500">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        Admin-Bereich
+                    </a>
                 </div>
             </div>
         </div>
