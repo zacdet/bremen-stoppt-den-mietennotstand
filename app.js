@@ -2,13 +2,24 @@
 // 1. HEADER SCROLL EFFECT
 // ==========================================
 const header = document.getElementById('main-header');
+const headerLogo = document.getElementById('header-logo');
 
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) {
-        header.classList.add('shadow-lg', 'py-1');
-        header.classList.remove('py-0');
-    } else {
-        header.classList.remove('shadow-lg', 'py-1');
+    if (header) {
+        if (window.scrollY > 20) {
+            header.classList.add('shadow-lg', 'py-1');
+            header.classList.remove('py-0');
+            if (headerLogo) {
+                headerLogo.classList.add('max-w-0', 'h-0', 'opacity-0', 'mr-0');
+                headerLogo.classList.remove('h-12', 'sm:h-16', 'opacity-100', 'mr-2', 'sm:mr-3');
+            }
+        } else {
+            header.classList.remove('shadow-lg', 'py-1');
+            if (headerLogo) {
+                headerLogo.classList.remove('max-w-0', 'h-0', 'opacity-0', 'mr-0');
+                headerLogo.classList.add('h-12', 'sm:h-16', 'opacity-100', 'mr-2', 'sm:mr-3');
+            }
+        }
     }
 });
 
@@ -981,4 +992,9 @@ function initNewsFeed() {
 document.addEventListener('DOMContentLoaded', () => {
     initSignatureCounter();
     initNewsFeed();
+    
+    // Trigger scroll check on load in case the page is already scrolled
+    if (window.scrollY > 20) {
+        window.dispatchEvent(new Event('scroll'));
+    }
 });
