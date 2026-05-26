@@ -872,7 +872,10 @@ function checkBremenRent() {
     
     // Smooth scroll result on mobile
     if (window.innerWidth < 768) {
-        document.getElementById('mietcheck-result-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const resContainer = document.getElementById('mietcheck-result-container');
+        if (resContainer) {
+            resContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
     }
 }
 
