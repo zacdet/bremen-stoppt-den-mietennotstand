@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bremen stoppt den Mietennotstand! — Bürgerantrag</title>
+    
+    <!-- Meta Tags für SEO -->
+    <meta name="description" content="Offizielle Website des Bürgerantrags 'Bremen stoppt den Mietennotstand!'. Gemeinsam gegen Wuchermieten, Spekulation und Leerstand in Bremen & Bremerhaven.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Konfiguration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#fff5f5',
+                            100: '#fed7d7',
+                            200: '#feb2b2',
+                            300: '#fc8181',
+                            400: '#f56565',
+                            500: '#e53e3e',
+                            600: '#c53030',
+                            700: '#9b2c2c',
+                            800: '#742a2a',
+                            900: '#5c2323',
+                        },
+                        brandDark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Eigene Styles für zusätzliche Effekte -->
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .active-tab {
+            border-color: #e53e3e;
+            color: #e53e3e;
+            background-color: #fff5f5;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-primary-100 selection:text-primary-900">
+
+    <!-- Header / Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-slate-100 glass" id="main-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <a href="#" class="flex items-center space-x-2 group">
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary-500 text-white font-extrabold text-xl shadow-md shadow-primary-200 group-hover:scale-105 transition-transform">B</span>
+                    <span class="font-display font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 group-hover:text-primary-600 transition-colors">
+                        Mietenstopp <span class="text-primary-500">Bremen</span>
+                    </span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2">
+                    <a href="#forderungen" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-primary-500 hover:bg-slate-50 transition-all">Forderungen</a>
+                    <a href="#mietcheck" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-primary-500 hover:bg-slate-50 transition-all flex items-center gap-1">
+                        Miet-Check
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-primary-100 text-primary-700 uppercase">Aktiv</span>
+                    </a>
+                    <a href="#hintergruende" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-primary-500 hover:bg-slate-50 transition-all">Hintergründe</a>
+                    <a href="#aktuelles" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-primary-500 hover:bg-slate-50 transition-all">Aktuelles</a>
+                    <a href="#buendnis" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-primary-500 hover:bg-slate-50 transition-all">Bündnis</a>
+                </nav>
+                
+                <div class="hidden md:flex items-center">
+                    <a href="#unterschreiben" class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-primary-500 hover:bg-primary-600 active:scale-95 shadow-lg shadow-primary-200 transition-all">
+                        Hier unterschreiben
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-xl text-slate-500 hover:text-primary-500 hover:bg-slate-100 focus:outline-none transition-colors" id="mobile-menu-btn" aria-label="Menü öffnen">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24" id="burger-icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24" id="close-icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden border-t border-slate-100 bg-white" id="mobile-menu">
+            <div class="px-2 pt-2 pb-4 space-y-1 shadow-inner">
+                <a href="#forderungen" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-600 hover:bg-slate-50 hover:text-primary-500 transition-colors">Forderungen</a>
+                <a href="#mietcheck" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-600 hover:bg-slate-50 hover:text-primary-500 transition-colors">Miet-Check</a>
+                <a href="#hintergruende" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-600 hover:bg-slate-50 hover:text-primary-500 transition-colors">Hintergründe</a>
+                <a href="#aktuelles" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-600 hover:bg-slate-50 hover:text-primary-500 transition-colors">Aktuelles</a>
+                <a href="#buendnis" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-600 hover:bg-slate-50 hover:text-primary-500 transition-colors">Bündnis</a>
+                <div class="pt-4 pb-2 px-4">
+                    <a href="#unterschreiben" class="block w-full text-center px-5 py-3 rounded-xl text-base font-bold text-white bg-primary-500 hover:bg-primary-600 shadow-lg shadow-primary-200 transition-colors">
+                        Hier unterschreiben
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20 sm:pt-24 overflow-hidden">
+        
+        <!-- Hero Section / Einleitung -->
+        <section class="relative py-12 sm:py-20 lg:py-24 bg-gradient-to-b from-primary-50 via-slate-50 to-slate-50">
+            <!-- Hintergrund-Kreis-Effekt -->
+            <div class="absolute top-0 right-0 -z-10 w-72 sm:w-[600px] h-72 sm:h-[600px] bg-primary-100 rounded-full filter blur-3xl opacity-40 translate-x-1/3 -translate-y-1/4"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:grid lg:grid-cols-12 lg:gap-12 items-center">
+                    
+                    <div class="lg:col-span-7 space-y-6 sm:space-y-8 text-left">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-primary-100 text-primary-700 tracking-wide uppercase">
+                            <span class="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
+                            Bürgerantrag für Bremen & Bremerhaven
+                        </span>
+                        
+                        <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight leading-none">
+                            Mieten-Notstand <br class="hidden sm:inline">
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600">stoppen!</span>
+                        </h1>
+                        
+                        <p class="text-base sm:text-xl text-slate-600 max-w-2xl font-normal leading-relaxed">
+                            Die Mieten in Bremen und Bremerhaven explodieren. Wohnarmut greift um sich, während Konzerne spekulieren und Häuser leerstehen lassen. Es reicht! Wir fordern einen grundlegenden Richtungswechsel.
+                        </p>
+                        
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+                            <a href="#unterschreiben" class="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-bold text-white bg-primary-500 hover:bg-primary-600 active:scale-98 shadow-xl shadow-primary-200 transition-all text-center">
+                                Unterschriften-Karte öffnen
+                            </a>
+                            <a href="#forderungen" class="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 active:scale-98 shadow-sm transition-all text-center">
+                                Forderungen lesen
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Sidebar: Unterschriften-Zähler & Begründung -->
+                    <div class="mt-12 lg:mt-0 lg:col-span-5">
+                        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 p-6 sm:p-8 space-y-6">
+                            <h3 class="font-display font-extrabold text-xl text-slate-900">Unterschriftensammlung läuft!</h3>
+                            
+                            <!-- Progress Bar -->
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="font-semibold text-slate-500">Bisher gesammelt</span>
+                                    <span class="font-extrabold text-primary-500">3.482 / 5.000</span>
+                                </div>
+                                <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full transition-all duration-1000" style="width: 70%;"></div>
+                                </div>
+                                <p class="text-xs text-slate-400">Erforderlich für den Bürgerantrag nach Art. 87 der Verfassung des Landes Bremen.</p>
+                            </div>
+                            
+                            <hr class="border-slate-100">
+                            
+                            <!-- Kurzbegründung -->
+                            <div class="bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-100">
+                                <h4 class="font-bold text-sm text-slate-900 uppercase tracking-wider mb-2">Die Begründung:</h4>
+                                <p class="text-sm text-slate-600 leading-relaxed italic">
+                                    "Der Mietennotstand in Bremen und Bremerhaven führt zur Verdrängung ganzer Bevölkerungsgruppen. Leerstand entzieht dem Markt Wohnraum, während Schrottimmobilien die Quartiere belasten. Wir fordern den Senat zum sofortigen Handeln auf!"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        
+        <!-- Forderungen Section -->
+        <section id="forderungen" class="py-16 sm:py-24 bg-white border-y border-slate-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12 sm:mb-16">
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">
+                        Der Bürgerantrag: Unsere Forderungen
+                    </h2>
+                    <p class="text-base sm:text-lg text-slate-500">
+                        Die Bremische Bürgerschaft muss ein umfassendes Maßnahmenpaket beschließen, um die Menschen wirksam vor Wohnarmut und Spekulation zu schützen.
+                    </p>
+                </div>
+                
+                <!-- Forderungs-Akkordeons (Mobile-optimiert & interaktiv) -->
+                <div class="max-w-4xl mx-auto space-y-4" id="forderungen-container">
+                    
+                    <!-- Forderung 1 -->
+                    <div class="border border-slate-100 rounded-2xl overflow-hidden transition-all duration-300 shadow-sm bg-white" data-accordion="close">
+                        <button type="button" class="w-full flex items-center justify-between p-5 sm:p-6 text-left font-display font-extrabold text-base sm:text-lg text-slate-900 hover:bg-slate-50/50 transition-colors focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-sm">1</span>
+                                Bezahlbaren Wohnraum schaffen!
+                            </span>
+                            <svg class="w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-slate-50/50">
+                            <div class="p-5 sm:p-6 text-slate-600 text-sm sm:text-base leading-relaxed space-y-3 border-t border-slate-100/50">
+                                <p><strong>Turbo beim sozialen und kommunalen Wohnungsbau:</strong> Wir fordern eine Soziale Mietenstrategie, mehr Budget für den sozialen Wohnungsbau sowie den Ankauf von Sozialbindungen und Genossenschaftsförderungen.</p>
+                                <p>Der Bau muss sich konsequent am realen Bedarf orientieren. Das bedeutet: Auch gezielt große und barrierefreie Wohnungen sowie Auszubildenden- und Studierendenwohnheime bauen!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Forderung 2 -->
+                    <div class="border border-slate-100 rounded-2xl overflow-hidden transition-all duration-300 shadow-sm bg-white" data-accordion="close">
+                        <button type="button" class="w-full flex items-center justify-between p-5 sm:p-6 text-left font-display font-extrabold text-base sm:text-lg text-slate-900 hover:bg-slate-50/50 transition-colors focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-sm">2</span>
+                                Wuchermieten beenden!
+                            </span>
+                            <svg class="w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-slate-50/50">
+                            <div class="p-5 sm:p-6 text-slate-600 text-sm sm:text-base leading-relaxed space-y-3 border-t border-slate-100/50">
+                                <p><strong>Illegal überhöhte Mieten wirksam ahnden:</strong> Mieten, die illegal überhöht sind, dürfen nicht länger straffrei bleiben. Wir fordern den Ausbau einer zentralen Miet-Melde-Stelle, die überhöhte Mieten proaktiv verfolgt, Rückzahlungen an Mieter*innen erwirkt und spürbare Bußgelder verhängt.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forderung 3 -->
+                    <div class="border border-slate-100 rounded-2xl overflow-hidden transition-all duration-300 shadow-sm bg-white" data-accordion="close">
+                        <button type="button" class="w-full flex items-center justify-between p-5 sm:p-6 text-left font-display font-extrabold text-base sm:text-lg text-slate-900 hover:bg-slate-50/50 transition-colors focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-sm">3</span>
+                                Verwahrlosung von Wohnraum beenden!
+                            </span>
+                            <svg class="w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-slate-50/50">
+                            <div class="p-5 sm:p-6 text-slate-600 text-sm sm:text-base leading-relaxed space-y-3 border-t border-slate-100/50">
+                                <p><strong>Konsequenter Schutz vor Problemimmobilien:</strong> Gegen Eigentümer*innen von verfallenden Problemimmobilien, die die Lebensqualität der Bewohner*innen einschränken (z. B. durch Heizungsausfälle oder Schimmel) und die öffentliche Sicherheit gefährden, muss konsequent mit Bau-, Modernisierungs- und Instandsetzungsgeboten vorgegangen werden.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forderung 4 -->
+                    <div class="border border-slate-100 rounded-2xl overflow-hidden transition-all duration-300 shadow-sm bg-white" data-accordion="close">
+                        <button type="button" class="w-full flex items-center justify-between p-5 sm:p-6 text-left font-display font-extrabold text-base sm:text-lg text-slate-900 hover:bg-slate-50/50 transition-colors focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-sm">4</span>
+                                Leerstand bekämpfen!
+                            </span>
+                            <svg class="w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-slate-50/50">
+                            <div class="p-5 sm:p-6 text-slate-600 text-sm sm:text-base leading-relaxed space-y-3 border-t border-slate-100/50">
+                                <p><strong>Treuhandverwaltung gesetzlich verankern:</strong> Wenn Eigentümer*innen bewohnbaren Wohnraum spekulativ leerstehen lassen, muss die Stadt einschreiten können. Die Einsetzung einer Treuhandverwaltung bei leerstehenden Immobilien muss gesetzlich geregelt werden, um Wohnraum schnellstmöglich wieder zu vermieten.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forderung 5 -->
+                    <div class="border border-slate-100 rounded-2xl overflow-hidden transition-all duration-300 shadow-sm bg-white" data-accordion="close">
+                        <button type="button" class="w-full flex items-center justify-between p-5 sm:p-6 text-left font-display font-extrabold text-base sm:text-lg text-slate-900 hover:bg-slate-50/50 transition-colors focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-sm">5</span>
+                                Wohnraum darf kein Spekulationsobjekt sein!
+                            </span>
+                            <svg class="w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-slate-50/50">
+                            <div class="p-5 sm:p-6 text-slate-600 text-sm sm:text-base leading-relaxed space-y-3 border-t border-slate-100/50">
+                                <p><strong>Wohnungsbestände rekommunalisieren:</strong> Konzerne und Spekulanten dürfen nicht systematisch Profitmaximierung auf Kosten der Mieter*innen betreiben. Privatisierte Bestände müssen wieder in öffentliche Hand zurückgeführt werden. Zudem fordern wir eine Reform des Landesenteignungsgesetzes für skrupellose Eigentümer*innen sowie das Verbot des Verkaufs von öffentlichem Grund und Boden.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forderung 6 -->
+                    <div class="border border-slate-100 rounded-2xl overflow-hidden transition-all duration-300 shadow-sm bg-white" data-accordion="close">
+                        <button type="button" class="w-full flex items-center justify-between p-5 sm:p-6 text-left font-display font-extrabold text-base sm:text-lg text-slate-900 hover:bg-slate-50/50 transition-colors focus:outline-none" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-sm">6</span>
+                                Spaltung der Stadtteile beenden!
+                            </span>
+                            <svg class="w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-slate-50/50">
+                            <div class="p-5 sm:p-6 text-slate-600 text-sm sm:text-base leading-relaxed space-y-3 border-t border-slate-100/50">
+                                <p><strong>Gemischte Quartiere & Soziale Quote anheben:</strong> Um die Segregation (Spaltung in reiche und arme Nachbarschaften) aufzubrechen, fordern wir eine Anhebung der Sozialwohnungsquote bei Neubauprojekten in teuren Stadtteilen (wie Schwachhausen oder der Östlichen Vorstadt).</p>
+                                <p>Gleichzeitig müssen sozial-ökologische Konzepte umgesetzt werden, die das Stadtklima z. B. durch neue, öffentlich zugängliche Grünflächen in allen Stadtteilen verbessern.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Miet-Check Section (Interaktives Widget) -->
+        <section id="mietcheck" class="py-16 sm:py-24 bg-gradient-to-b from-slate-50 to-slate-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12 sm:mb-16">
+                    <span class="px-3 py-1.5 rounded-full text-xs font-bold bg-primary-100 text-primary-700 tracking-wide uppercase">Interaktives Tool</span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">
+                        Zahlen Sie zu viel Miete? Der Miet-Check
+                    </h2>
+                    <p class="text-base sm:text-lg text-slate-500">
+                        In Bremen gilt: Mieten, die gesetzliche Vergleichswerte deutlich überschreiten, können illegal sein. Prüfen Sie jetzt unverbindlich, ob bei Ihrer Miete der Verdacht auf Überhöhung oder Wucher vorliegt.
+                    </p>
+                </div>
+                
+                <div class="max-w-3xl mx-auto">
+                    <div class="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden grid md:grid-cols-12">
+                        
+                        <!-- Inputs Form (7 cols) -->
+                        <div class="p-6 sm:p-8 md:col-span-7 space-y-6">
+                            <h3 class="font-display font-bold text-lg text-slate-900 border-b border-slate-100 pb-3">Ihre Mietdaten eingeben</h3>
+                            
+                            <div class="space-y-4">
+                                <!-- Vergleichsmiete Input -->
+                                <div class="space-y-1">
+                                    <label for="comparison-rent" class="block text-sm font-semibold text-slate-700">Ortsübliche Vergleichsmiete (netto kalt pro m²)*</label>
+                                    <div class="relative mt-1">
+                                        <input type="number" step="0.01" id="comparison-rent" class="block w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 transition-all" placeholder="z.B. 8.50" required>
+                                        <span class="absolute inset-y-0 right-4 flex items-center text-slate-400 font-semibold text-sm">€ / m²</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400">Kann dem Bremer Mietspiegel entnommen werden.</p>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4">
+                                    <!-- Wohnfläche -->
+                                    <div class="space-y-1">
+                                        <label for="flat-size" class="block text-sm font-semibold text-slate-700">Wohnfläche</label>
+                                        <div class="relative mt-1">
+                                            <input type="number" id="flat-size" class="block w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 transition-all" placeholder="z.B. 60" required>
+                                            <span class="absolute inset-y-0 right-4 flex items-center text-slate-400 font-semibold text-sm">m²</span>
+                                        </div>
+                                    </div>
+                                    <!-- Tatsächliche Kaltmiete -->
+                                    <div class="space-y-1">
+                                        <label for="actual-rent" class="block text-sm font-semibold text-slate-700">Aktuelle Kaltmiete (netto)</label>
+                                        <div class="relative mt-1">
+                                            <input type="number" id="actual-rent" class="block w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 transition-all" placeholder="z.B. 650" required>
+                                            <span class="absolute inset-y-0 right-4 flex items-center text-slate-400 font-semibold text-sm">€</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="w-full py-4 rounded-xl text-base font-bold text-white bg-primary-500 hover:bg-primary-600 active:scale-98 shadow-lg shadow-primary-200 transition-all text-center" onclick="calculateRent()">
+                                Miete jetzt berechnen
+                            </button>
+                        </div>
+                        
+                        <!-- Result Panel (5 cols) -->
+                        <div class="md:col-span-5 bg-slate-900 text-white p-6 sm:p-8 flex flex-col justify-between" id="mietcheck-result-container">
+                            <div class="space-y-4" id="result-placeholder">
+                                <div class="w-12 h-12 rounded-2xl bg-slate-800 text-slate-400 flex items-center justify-center mb-4">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                </div>
+                                <h4 class="font-display font-extrabold text-lg">Ergebnis berechnen</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed">
+                                    Geben Sie links Ihre Daten ein und klicken Sie auf berechnen. Das Ergebnis zeigt Ihnen an, ob Ihre Miete die gesetzlichen Richtwerte verletzt.
+                                </p>
+                            </div>
+                            
+                            <!-- Real Output (will be generated by JS) -->
+                            <div class="hidden space-y-6 flex-grow flex flex-col justify-between" id="result-output">
+                                <div class="space-y-4">
+                                    <span class="inline-flex px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider" id="result-badge"></span>
+                                    <div class="space-y-1">
+                                        <p class="text-xs text-slate-400">Ihre Kaltmiete pro m²:</p>
+                                        <p class="text-2xl font-extrabold font-display"><span id="actual-rent-per-sqm">0.00</span> € / m²</p>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <p class="text-xs text-slate-400">Erlaubte Vergleichsmiete:</p>
+                                        <p class="text-lg font-bold text-slate-300"><span id="allowed-rent-total">0.00</span> €</p>
+                                    </div>
+                                    <div class="space-y-1" id="excess-container">
+                                        <p class="text-xs text-slate-400" id="excess-label">Abweichung:</p>
+                                        <p class="text-xl font-bold text-primary-400" id="excess-percentage">+0.0 %</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700/50 mt-4">
+                                    <p class="text-xs text-slate-300 leading-relaxed" id="result-description"></p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-[10px] text-slate-500 leading-tight mt-6">
+                                * Dieser Rechner dient als erste, unverbindliche Orientierungshilfe und ersetzt keine juristische Beratung.
+                            </p>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Hintergründe Section -->
+        <section id="hintergruende" class="py-16 sm:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12 sm:mb-16">
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">
+                        Hintergründe zum Bürgerantrag
+                    </h2>
+                    <p class="text-base sm:text-lg text-slate-500">
+                        Warum wir diesen Mietenstopp brauchen. Die Fakten zur Wohnsituation in Bremen und Bremerhaven verständlich aufbereitet.
+                    </p>
+                </div>
+                
+                <!-- Modern Tab Control -->
+                <div class="max-w-5xl mx-auto space-y-8">
+                    
+                    <!-- Tab Buttons (Flex-Grid, Mobile Scrollable) -->
+                    <div class="flex border-b border-slate-100 overflow-x-auto pb-px scrollbar-none gap-2" role="tablist">
+                        <button type="button" class="flex-shrink-0 px-4 py-3 sm:px-6 sm:py-4 rounded-t-xl border-t border-x border-transparent font-display font-bold text-sm sm:text-base text-slate-500 hover:text-primary-500 transition-all active-tab" onclick="switchTab(this, 'tab-wohnraum')">
+                            1. Wohnraum & Neubau
+                        </button>
+                        <button type="button" class="flex-shrink-0 px-4 py-3 sm:px-6 sm:py-4 rounded-t-xl border-t border-x border-transparent font-display font-bold text-sm sm:text-base text-slate-500 hover:text-primary-500 transition-all" onclick="switchTab(this, 'tab-spaltung')">
+                            2. Stadtteil-Spaltung
+                        </button>
+                        <button type="button" class="flex-shrink-0 px-4 py-3 sm:px-6 sm:py-4 rounded-t-xl border-t border-x border-transparent font-display font-bold text-sm sm:text-base text-slate-500 hover:text-primary-500 transition-all" onclick="switchTab(this, 'tab-wuchermieten')">
+                            3. Mietwucher & Gesetze
+                        </button>
+                        <button type="button" class="flex-shrink-0 px-4 py-3 sm:px-6 sm:py-4 rounded-t-xl border-t border-x border-transparent font-display font-bold text-sm sm:text-base text-slate-500 hover:text-primary-500 transition-all" onclick="switchTab(this, 'tab-leerstand')">
+                            4. Leerstand & Spekulation
+                        </button>
+                    </div>
+                    
+                    <!-- Tab Content Panel -->
+                    <div class="bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-sm" id="tab-content-panel">
+                        
+                        <!-- Panel 1: Wohnraum & Neubau -->
+                        <div class="space-y-6" id="tab-wohnraum">
+                            <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">Wohnraum bezahlbar und nachhaltig ausbauen!</h3>
+                            <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                                Der profitorientierte private Wohnungsbau schafft so gut wie keine bezahlbaren Wohnungen und baut damit an den realen Bedarfen der Gesellschaft vorbei. Gerade in Städten und Metropolen wird von privaten Investor*innen vor allem im oberen Preis- und Luxussegment und damit nur für eine kleine wohlhabende Minderheit gebaut.
+                            </p>
+                            <div class="bg-primary-50 rounded-2xl p-5 border border-primary-100/50">
+                                <h4 class="font-bold text-primary-900 text-sm sm:text-base mb-2">Unsere Lösungsansätze:</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-primary-800 text-xs sm:text-sm">
+                                    <li><strong>Umfassende Investitionen:</strong> Förderung von gemeinwohlorientiertem, sozialem Wohnungsbau.</li>
+                                    <li><strong>Stärkung kommunaler Träger:</strong> Mehr direkter Einfluss durch Wohnungsbaugesellschaften in öffentlicher Hand.</li>
+                                    <li><strong>Genossenschaften fördern:</strong> Unterstützung von Modellen, bei denen die Mieter*innen ihre Häuser selbst kontrollieren.</li>
+                                    <li><strong>Nachhaltige Raumnutzung:</strong> Umnutzung von Büroräumen und Aufstockung statt reiner Versiegelung.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Panel 2: Stadtteil-Spaltung -->
+                        <div class="hidden space-y-6" id="tab-spaltung">
+                            <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">Spaltung der Stadtteile in Arm und Reich verringern!</h3>
+                            <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                                Anfang 2025 gab es im Schnitt 11 öffentlich geförderte Wohnungen („Sozialwohnungen“) auf 1.000 Einwohner*innen in Bremen. Zum Einen ist dieser Wert viel zu niedrig, da der Bedarf stetig steigt. Zum Anderen sind diese Sozialwohnungen extrem ungleich auf die Stadtteile verteilt.
+                            </p>
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div class="border border-slate-100 rounded-2xl p-5 bg-slate-50">
+                                    <span class="block text-2xl font-extrabold text-primary-500 font-display">1 zu 1.000</span>
+                                    <span class="text-xs sm:text-sm font-semibold text-slate-500">Sozialwohnungen im privilegierten Schwachhausen</span>
+                                </div>
+                                <div class="border border-slate-100 rounded-2xl p-5 bg-slate-50">
+                                    <span class="block text-2xl font-extrabold text-slate-900 font-display">35 zu 1.000</span>
+                                    <span class="text-xs sm:text-sm font-semibold text-slate-500">Sozialwohnungen im strukturschwachen Gröpelingen</span>
+                                </div>
+                            </div>
+                            <p class="text-slate-600 leading-relaxed text-sm">
+                                Seit Einführung der Sozialquote (2012) wurden in Bremen rund 3.000 neue Sozialwohnungen geschaffen. Jedoch fast 1.000 davon allein in der Überseestadt, während in Schwachhausen gerade einmal 18 entstanden. Wir müssen der Segregation ganzer Stadtteile dringend entgegenwirken!
+                            </p>
+                        </div>
+                        
+                        <!-- Panel 3: Mietwucher & Gesetze -->
+                        <div class="hidden space-y-6" id="tab-wuchermieten">
+                            <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">Wohnausbeutung wirksam stoppen!</h3>
+                            <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                                Bei illegal überhöhten Mieten unterscheidet man rechtlich zwischen zwei Stufen:
+                            </p>
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div class="border border-slate-100 rounded-2xl p-5 bg-slate-50 space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="inline-flex px-2 py-1 rounded bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase">Stufe 1</span>
+                                        <span class="text-xs text-slate-400">§ 5 WiStG</span>
+                                    </div>
+                                    <h4 class="font-bold text-slate-900">Mietpreisüberhöhung</h4>
+                                    <p class="text-xs sm:text-sm text-slate-500 leading-normal">Liegt vor, wenn die Miete die ortsübliche Vergleichsmiete um <strong>mehr als 20 %</strong> überschreitet. Gilt als Ordnungswidrigkeit.</p>
+                                </div>
+                                <div class="border border-slate-100 rounded-2xl p-5 bg-slate-50 space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="inline-flex px-2 py-1 rounded bg-red-100 text-red-800 text-[10px] font-bold uppercase">Stufe 2</span>
+                                        <span class="text-xs text-slate-400">§ 291 StGB</span>
+                                    </div>
+                                    <h4 class="font-bold text-slate-900">Mietwucher</h4>
+                                    <p class="text-xs sm:text-sm text-slate-500 leading-normal">Liegt vor bei einer Überschreitung von <strong>mehr als 50 %</strong> und dem zusätzlichen Ausnutzen einer Zwangslage. Gilt als Straftat.</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                                Der Tatbestand der Mietpreisüberhöhung wird in Bremen kaum verfolgt, da es keine zentrale Anlaufstelle gibt. Leipzig, Berlin, Hamburg und Frankfurt machen es vor: Es braucht eine staatliche Meldestelle, die Betroffene systematisch und proaktiv unterstützt!
+                            </p>
+                        </div>
+                        
+                        <!-- Panel 4: Leerstand & Spekulation -->
+                        <div class="hidden space-y-6" id="tab-leerstand">
+                            <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">Spekulation und Leerstand effektiv bekämpfen</h3>
+                            <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                                Während Wohnungssuchende verzweifeln, entziehen Eigentümer Wohnraum spekulativ dem Markt. Laut Zensus standen in Bremen rund <strong>5.000 Wohnungen</strong> über ein Jahr leer. Das Gesetz definiert Leerstand ab 6 Monaten als meldepflichtige Zweckentfremdung – gehandelt wird jedoch kaum.
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <h4 class="font-bold text-sm text-slate-900 uppercase tracking-wider">Prominente Beispiele in Bremen:</h4>
+                                <div class="border-l-4 border-primary-500 pl-4 space-y-2">
+                                    <p class="text-sm font-semibold text-slate-900">Haus in der Kornstraße:</p>
+                                    <p class="text-xs sm:text-sm text-slate-500 leading-normal">Steht seit über 20 Jahren leer. Im Herbst besetzt durch "Leerstand gestalten Bremen", mittlerweile durch mangelnde Instandhaltung unbewohnbar.</p>
+                                </div>
+                                <div class="border-l-4 border-primary-500 pl-4 space-y-2">
+                                    <p class="text-sm font-semibold text-slate-900">Wohnanlage Rembertistraße 76:</p>
+                                    <p class="text-xs sm:text-sm text-slate-500 leading-normal">Seit einem Brand stehen hier 68 Wohnungen seit Jahren leer, da der Eigentümer die Instandsetzung immer wieder verzögert.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Aktuelles Section (News-Feed) -->
+        <section id="aktuelles" class="py-16 sm:py-24 bg-gradient-to-b from-slate-50 to-slate-100 border-y border-slate-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12 sm:mb-16">
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">
+                        Aktuelle Neuigkeiten
+                    </h2>
+                    <p class="text-base sm:text-lg text-slate-500">
+                        Bleiben Sie auf dem Laufenden über unsere Aktionen, Presseberichte und den aktuellen Stand der Unterschriftensammlung.
+                    </p>
+                </div>
+                
+                <!-- News Feed (3 Columns on Desktop, Slidable Cards on Mobile) -->
+                <div class="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
+                    
+                    <!-- News 1 -->
+                    <article class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div class="p-6 sm:p-8 space-y-4">
+                            <span class="inline-flex px-2.5 py-1 rounded-lg bg-primary-50 text-primary-600 text-xs font-bold">Presse</span>
+                            <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 leading-tight">
+                                Medienschau zur Vorstellung des Bürgerantrags
+                            </h3>
+                            <p class="text-sm text-slate-500 leading-relaxed">
+                                „Wer schon länger in Bremen oder Bremerhaven zur Miete wohnt, hat diese Entwicklung womöglich am eigenen Leib erfahren...“ – Lesen Sie die Berichterstattung der lokalen Medien.
+                            </p>
+                        </div>
+                        <div class="p-6 border-t border-slate-50 flex items-center justify-between bg-slate-50/50">
+                            <span class="text-xs text-slate-400">Vor kurzem</span>
+                            <span class="text-xs font-bold text-primary-500 hover:text-primary-600 cursor-pointer flex items-center gap-1">Weiterlesen <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                        </div>
+                    </article>
+                    
+                    <!-- News 2 -->
+                    <article class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div class="p-6 sm:p-8 space-y-4">
+                            <span class="inline-flex px-2.5 py-1 rounded-lg bg-primary-50 text-primary-600 text-xs font-bold">Kampagne</span>
+                            <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 leading-tight">
+                                Wir veröffentlichen den Bürgerantrag zum Mietennotstand
+                            </h3>
+                            <p class="text-sm text-slate-500 leading-relaxed">
+                                Wir starten offiziell mit der Unterschriftensammlung! Den kompletten Antragstext und alle rechtlichen Details findet ihr direkt auf unserer Forderungsseite.
+                            </p>
+                        </div>
+                        <div class="p-6 border-t border-slate-50 flex items-center justify-between bg-slate-50/50">
+                            <span class="text-xs text-slate-400">18. Mai</span>
+                            <span class="text-xs font-bold text-primary-500 hover:text-primary-600 cursor-pointer flex items-center gap-1">Weiterlesen <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                        </div>
+                    </article>
+                    
+                    <!-- News 3 -->
+                    <article class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div class="p-6 sm:p-8 space-y-4">
+                            <span class="inline-flex px-2.5 py-1 rounded-lg bg-primary-50 text-primary-600 text-xs font-bold">Termin</span>
+                            <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 leading-tight">
+                                Pressekonferenz zum Kampagnenstart
+                            </h3>
+                            <p class="text-sm text-slate-500 leading-relaxed">
+                                Am 18.05. startet die Kampagne um 10:00 Uhr mit einer Pressekonferenz im KARLS Gästezimmer. Wir stellen uns den Fragen der Journalist*innen und erläutern unsere Ziele.
+                            </p>
+                        </div>
+                        <div class="p-6 border-t border-slate-50 flex items-center justify-between bg-slate-50/50">
+                            <span class="text-xs text-slate-400">18. Mai</span>
+                            <span class="text-xs font-bold text-primary-500 hover:text-primary-600 cursor-pointer flex items-center gap-1">Weiterlesen <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                        </div>
+                    </article>
+                    
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Unterschreiben Section (Google Maps) -->
+        <section id="unterschreiben" class="py-16 sm:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12 sm:mb-16">
+                    <span class="px-3 py-1.5 rounded-full text-xs font-bold bg-primary-100 text-primary-700 tracking-wide uppercase">Unterschriften-Orte</span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">
+                        Wo kann ich unterschreiben?
+                    </h2>
+                    <p class="text-base sm:text-lg text-slate-500">
+                        Nutzen Sie unsere interaktive Standorte-Karte, um Unterschriftenlisten in Ihrer Nähe zu finden. Es gibt zahlreiche Anlaufstellen in Bremen & Bremerhaven.
+                    </p>
+                </div>
+                
+                <!-- Google Maps Container -->
+                <div class="max-w-5xl mx-auto">
+                    <div class="bg-slate-100 rounded-3xl border border-slate-200 overflow-hidden shadow-lg aspect-[4/3] md:aspect-[16/9]">
+                        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1wDQJ54oRX1qVJGdjzPnt6kVZUDXbGf4&ehbc=2E312F" class="w-full h-full border-none" allowfullscreen="" loading="lazy" title="Standorte Unterschriftenlisten Mietennotstand Bremen"></iframe>
+                    </div>
+                    
+                    <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <span class="w-3 h-3 rounded-full bg-primary-500 animate-ping"></span>
+                            <span class="text-sm text-slate-600 font-semibold">Täglich neue Unterschriftenlisten und Stände in den Stadtteilen.</span>
+                        </div>
+                        <a href="mailto:lyranoro@gmail.com" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm text-center transition-colors">
+                            Eigenen Standort melden
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Bündnis Section -->
+        <section id="buendnis" class="py-16 sm:py-24 bg-gradient-to-b from-slate-50 to-slate-100 border-t border-slate-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12 sm:mb-16">
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">
+                        Unser Bündnis
+                    </h2>
+                    <p class="text-base sm:text-lg text-slate-500">
+                        Ein breites, solidarisches Bündnis aus Vereinen, Mieter-Initiativen, solidarischen Genossenschaften und politischen Organisationen steht hinter diesem Bürgerantrag.
+                    </p>
+                </div>
+                
+                <!-- Bündnispartner Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
+                    
+                    <!-- Partner 1 -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform">
+                        <span class="text-sm sm:text-base font-bold text-slate-800">LieLa e.V.</span>
+                    </div>
+                    <!-- Partner 2 -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform">
+                        <span class="text-sm sm:text-base font-bold text-slate-800">s c h o l l e 47 eG</span>
+                    </div>
+                    <!-- Partner 3 -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform">
+                        <span class="text-sm sm:text-base font-bold text-slate-800">KARL Genossenschaft</span>
+                        <span class="text-[10px] text-slate-400 mt-1 font-semibold">Solidarisch wohnen & bauen</span>
+                    </div>
+                    <!-- Partner 4 -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform">
+                        <span class="text-sm sm:text-base font-bold text-slate-800">Solidarische Hilfe</span>
+                    </div>
+                    <!-- Partner 5 -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform">
+                        <span class="text-sm sm:text-base font-bold text-slate-800">Scholle Genossenschaft</span>
+                    </div>
+                    <!-- Partner 6 -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform">
+                        <span class="text-sm sm:text-base font-bold text-slate-800">BEV</span>
+                    </div>
+                    <!-- Partner 7 -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform">
+                        <span class="text-sm sm:text-base font-bold text-slate-800">Stadtteilgenossenschaft Hulsberg</span>
+                    </div>
+                    <!-- Partner 8 -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform">
+                        <span class="text-sm sm:text-base font-bold text-slate-800">Menschenrecht auf Wohnen</span>
+                        <span class="text-[10px] text-slate-400 mt-1 font-semibold">Aktionsbündnis</span>
+                    </div>
+                    <!-- Partner 9 -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform md:col-span-3 lg:col-span-4 max-w-md mx-auto w-full">
+                        <span class="text-sm sm:text-base font-bold text-slate-800">Die Linke. Landesverband Bremen</span>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer & Impressum -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12 border-b border-slate-800 pb-8 mb-8">
+                
+                <div class="space-y-4">
+                    <span class="font-display font-extrabold text-xl text-white">Bremen stoppt den Mietennotstand!</span>
+                    <p class="text-sm text-slate-500 leading-relaxed max-w-sm">
+                        Eine Initiative von Bürgerinnen und Bürgern im Land Bremen. Gemeinsam treten wir für sozialen Zusammenhalt und bezahlbaren Wohnraum für alle ein.
+                    </p>
+                </div>
+                
+                <div class="space-y-4" id="impressum">
+                    <h4 class="font-bold text-sm text-white uppercase tracking-wider">Impressum</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Noro Schlorke <br>
+                        Faulenstraße 75 <br>
+                        c/o Die Linke Bremen <br>
+                        28195 Bremen <br>
+                        Telefon: 0421 320666 <br>
+                        E-Mail: <a href="mailto:lyranoro@gmail.com" class="text-slate-400 hover:text-white transition-colors underline">lyranoro@gmail.com</a>
+                    </p>
+                </div>
+                
+            </div>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
+                <p>&copy; 2026 Bremen stoppt den Mietennotstand! Alle Rechte vorbehalten.</p>
+                <div class="flex gap-4">
+                    <a href="#impressum" class="hover:text-slate-400 transition-colors">Impressum</a>
+                    <a href="#" class="hover:text-slate-400 transition-colors">Datenschutz</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript-Datei einbinden -->
+    <script src="app.js"></script>
+</body>
+</html>
