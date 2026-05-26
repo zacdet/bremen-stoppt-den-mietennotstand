@@ -3,25 +3,55 @@
 // ==========================================
 const header = document.getElementById('main-header');
 const headerLogo = document.getElementById('header-logo');
+const heroLogo = document.getElementById('hero-logo');
 
-window.addEventListener('scroll', () => {
+function handleScrollEffects() {
+    const scrolled = window.scrollY > 120;
+    const scrolledHeaderOnly = window.scrollY > 20;
+
     if (header) {
-        if (window.scrollY > 20) {
+        if (scrolledHeaderOnly) {
             header.classList.add('shadow-lg', 'py-1');
             header.classList.remove('py-0');
-            if (headerLogo) {
-                headerLogo.classList.add('max-w-0', 'h-0', 'opacity-0', 'mr-0');
-                headerLogo.classList.remove('h-12', 'sm:h-16', 'opacity-100', 'mr-2', 'sm:mr-3');
-            }
         } else {
             header.classList.remove('shadow-lg', 'py-1');
-            if (headerLogo) {
-                headerLogo.classList.remove('max-w-0', 'h-0', 'opacity-0', 'mr-0');
-                headerLogo.classList.add('h-12', 'sm:h-16', 'opacity-100', 'mr-2', 'sm:mr-3');
+        }
+    }
+
+    if (headerLogo) {
+        if (heroLogo) {
+            // Morphs logo: hidden at top, appears when scrolled down
+            if (scrolled) {
+                headerLogo.classList.remove('max-w-0', 'h-0', 'opacity-0', 'mr-0', 'scale-75');
+                headerLogo.classList.add('h-12', 'sm:h-16', 'opacity-100', 'mr-2', 'sm:mr-3', 'scale-100');
+            } else {
+                headerLogo.classList.add('max-w-0', 'h-0', 'opacity-0', 'mr-0', 'scale-75');
+                headerLogo.classList.remove('h-12', 'sm:h-16', 'opacity-100', 'mr-2', 'sm:mr-3', 'scale-100');
+            }
+        } else {
+            // No hero logo: header logo is always visible, shrinks slightly when scrolled
+            if (scrolledHeaderOnly) {
+                headerLogo.classList.remove('h-12', 'sm:h-16');
+                headerLogo.classList.add('h-9', 'sm:h-11', 'opacity-100', 'mr-2', 'sm:mr-3', 'scale-100');
+            } else {
+                headerLogo.classList.add('h-12', 'sm:h-16');
+                headerLogo.classList.remove('h-9', 'sm:h-11');
             }
         }
     }
-});
+
+    if (heroLogo) {
+        if (scrolled) {
+            heroLogo.classList.add('opacity-0', 'scale-90', 'blur-sm');
+            heroLogo.classList.remove('opacity-100', 'scale-100', 'blur-none');
+        } else {
+            heroLogo.classList.remove('opacity-0', 'scale-90', 'blur-sm');
+            heroLogo.classList.add('opacity-100', 'scale-100', 'blur-none');
+        }
+    }
+}
+
+window.addEventListener('scroll', handleScrollEffects);
 
 
 // ==========================================
@@ -993,8 +1023,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initSignatureCounter();
     initNewsFeed();
     
-    // Trigger scroll check on load in case the page is already scrolled
-    if (window.scrollY > 20) {
-        window.dispatchEvent(new Event('scroll'));
-    }
+    // Trigger scroll check on load to set initial state correctly
+    handleScrollEffects();
 });
