@@ -329,6 +329,94 @@ const BREMEN_STREETS_FALLBACKS = {
     "fedelhoeren": "gut"
 };
 
+// --- ADVANCED GEOGRAPHIC DISTRICT MAPPING FOR BREMEN ---
+const BREMEN_DISTRICTS = {
+    // --- GUTE WOHNLAGEN ---
+    "schwachhausen": "gut",
+    "horn-lehe": "gut",
+    "borgfeld": "gut",
+    "oberneuland": "gut",
+    "ostertor": "gut",
+    "mitte": "gut",
+    "überseestadt": "gut",
+    "uberseestadt": "gut",
+    "riensberg": "gut",
+    "barkhof": "gut",
+    "gete": "gut",
+    "peterswerder": "gut",
+    "steintor": "gut",
+    "schoenebeck": "gut",
+    "schonebeck": "gut",
+    "st. magnus": "gut",
+    "sankt magnus": "gut",
+
+    // --- EINFACHE WOHNLAGEN ---
+    "gröpelingen": "einfach",
+    "gropelingen": "einfach",
+    "vahr": "einfach",
+    "blockdiek": "einfach",
+    "tenever": "einfach",
+    "osterholz": "einfach",
+    "blumenthal": "einfach",
+    "huchting": "einfach",
+    "kattenturm": "einfach",
+    "kattenesch": "einfach",
+    "arsten": "einfach",
+    "luessum": "einfach",
+    "lussum": "einfach",
+    "oslebshausen": "einfach",
+    "sodenmatt": "einfach",
+    "kirchhuchting": "einfach",
+    "mittelshuchting": "einfach",
+    "ellener feld": "einfach",
+    "ellenerbrok-schevemoor": "einfach",
+    "lindenhof": "einfach",
+    "ohlenhof": "einfach",
+    "luessum-bockhorn": "einfach",
+    "burgdamm": "einfach",
+    "grambke": "einfach",
+    "burg-grambke": "einfach",
+
+    // --- NORMALE WOHNLAGEN ---
+    "walle": "normal",
+    "findorff": "normal",
+    "neustadt": "normal",
+    "woltmershausen": "normal",
+    "hemelingen": "normal",
+    "hastedt": "normal",
+    "sebaldsbrück": "normal",
+    "sebaldsbruck": "normal",
+    "arbergen": "normal",
+    "mahndorf": "normal",
+    "vegesack": "normal",
+    "lesum": "normal",
+    "grohn": "normal",
+    "aumund": "normal",
+    "farge": "normal",
+    "rekum": "normal",
+    "rablinghausen": "normal",
+    "huckelriede": "normal",
+    "habenhausen": "normal",
+    "buntentor": "normal",
+    "südervorstadt": "normal",
+    "sudervorstadt": "normal",
+    "gartenstadt süd": "normal",
+    "gartenstadt sud": "normal",
+    "neuenland": "normal",
+    "bahnhofsvorstadt": "normal",
+    "steffensweg": "normal",
+    "utbremen": "normal",
+    "westend": "normal",
+    "osterfeuerberg": "normal",
+    "weidedamm": "normal",
+    "hulsberg": "normal",
+    "fesenfeld": "normal"
+};
+
+let apiDebounceTimeout = null;
+let currentApiMatches = [];
+let lastStreetQuery = "";
+
 // Normalization function to strip accents, lower-case, and handle common formats
 function normalizeText(text) {
     if (!text) return "";
@@ -372,46 +460,38 @@ function selectStreet(name, wohnlage) {
     `;
     badge.classList.remove('hidden');
     suggestionsList.classList.add('hidden');
+
+    // Reset API trackers
+    currentApiMatches = [];
+    lastStreetQuery = "";
 }
 
-function detectWohnlage(streetText) {
-    const badge = document.getElementById('detection-badge');
-    const select = document.getElementById('wohnlage-select');
-    const selectContainer = document.getElementById('wohnlage-select-container');
+function renderSuggestions(localMatches, apiMatches) {
     const suggestionsList = document.getElementById('suggestions-list');
-    
-    if (!streetText || streetText.trim().length < 2) {
-        badge.classList.add('hidden');
-        selectContainer.classList.remove('hidden');
-        suggestionsList.classList.add('hidden');
-        return;
-    }
+    if (!suggestionsList) return;
 
-    const normalizedInput = normalizeText(streetText);
+    // Combine local & dynamic API matches, removing duplicates
+    const combined = [];
+    const addedNames = new Set();
 
-    // 1. FILTER SUGGESTIONS FROM DATABASE
-    const matches = BREMEN_STREETS_DATABASE.filter(item => {
-        const normName = normalizeText(item.name);
-        return normName.includes(normalizedInput);
+    localMatches.forEach(match => {
+        combined.push(match);
+        addedNames.add(normalizeText(match.name));
     });
 
-    // Sort: Prefix matches first, then alphabetically
-    matches.sort((a, b) => {
-        const aNorm = normalizeText(a.name);
-        const bNorm = normalizeText(b.name);
-        const aStarts = aNorm.startsWith(normalizedInput);
-        const bStarts = bNorm.startsWith(normalizedInput);
-        
-        if (aStarts && !bStarts) return -1;
-        if (!aStarts && bStarts) return 1;
-        return a.name.localeCompare(b.name);
+    apiMatches.forEach(match => {
+        const norm = normalizeText(match.name);
+        if (!addedNames.has(norm)) {
+            combined.push(match);
+            addedNames.add(norm);
+        }
     });
 
-    const topMatches = matches.slice(0, 6);
+    const finalMatches = combined.slice(0, 7);
 
-    if (topMatches.length > 0) {
+    if (finalMatches.length > 0) {
         suggestionsList.innerHTML = '';
-        topMatches.forEach(match => {
+        finalMatches.forEach(match => {
             const item = document.createElement('button');
             item.type = 'button';
             item.className = 'w-full px-4 py-3 text-left hover:bg-slate-50 active:bg-slate-100 transition-colors flex items-center justify-between text-sm sm:text-base cursor-pointer border-0 bg-transparent focus:outline-none focus:bg-slate-50';
@@ -434,11 +514,138 @@ function detectWohnlage(streetText) {
     } else {
         suggestionsList.classList.add('hidden');
     }
+}
 
-    // 2. FALLBACK PATTERN DETECTION (Runs on active typing for direct/fuzzy matches)
+async function fetchBremenStreetsFromAPI(query, localMatches) {
+    if (normalizeText(query) === lastStreetQuery) return;
+    lastStreetQuery = normalizeText(query);
+
+    try {
+        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ', Bremen')}&format=json&addressdetails=1&limit=10`;
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'BremenMietspiegelCalculator/1.0'
+            }
+        });
+
+        if (!response.ok) return;
+        const data = await response.json();
+        
+        const apiMatches = [];
+        data.forEach(item => {
+            // Ensure we are dealing with a road/highway or pedestrian street
+            if (!item.address || (!item.address.road && !item.address.pedestrian)) return;
+            const streetName = item.address.road || item.address.pedestrian || item.name;
+            if (!streetName) return;
+
+            // Determine Wohnlage using OpenStreetMap address details
+            let detectedWohnlage = null;
+            const suburb = item.address.suburb ? item.address.suburb.toLowerCase() : "";
+            const quarter = item.address.quarter ? item.address.quarter.toLowerCase() : "";
+            const cityDistrict = item.address.city_district ? item.address.city_district.toLowerCase() : "";
+            const neighborhood = item.address.neighbourhood ? item.address.neighbourhood.toLowerCase() : "";
+
+            const locations = [suburb, quarter, cityDistrict, neighborhood];
+
+            for (let loc of locations) {
+                if (!loc) continue;
+                // Direct match check in BREMEN_DISTRICTS
+                if (BREMEN_DISTRICTS[loc]) {
+                    detectedWohnlage = BREMEN_DISTRICTS[loc];
+                    break;
+                }
+                // Fuzzy/Substring check
+                for (let key in BREMEN_DISTRICTS) {
+                    if (loc.includes(key) || key.includes(loc)) {
+                        detectedWohnlage = BREMEN_DISTRICTS[key];
+                        break;
+                    }
+                }
+                if (detectedWohnlage) break;
+            }
+
+            // Fallback: check localized name substrings in original fallback list
+            if (!detectedWohnlage) {
+                const normalizedStreet = normalizeText(streetName);
+                for (let key in BREMEN_STREETS_FALLBACKS) {
+                    if (normalizedStreet.includes(key)) {
+                        detectedWohnlage = BREMEN_STREETS_FALLBACKS[key];
+                        break;
+                    }
+                }
+            }
+
+            // Default fallback if no category matches
+            if (!detectedWohnlage) {
+                detectedWohnlage = "normal";
+            }
+
+            apiMatches.push({
+                name: streetName,
+                wohnlage: detectedWohnlage
+            });
+        });
+
+        currentApiMatches = apiMatches;
+
+        // Render combined lists
+        renderSuggestions(localMatches, currentApiMatches);
+
+    } catch (err) {
+        console.error("OSM Nominatim API request failed, falling back to local database:", err);
+    }
+}
+
+function detectWohnlage(streetText) {
+    const badge = document.getElementById('detection-badge');
+    const select = document.getElementById('wohnlage-select');
+    const selectContainer = document.getElementById('wohnlage-select-container');
+    
+    if (!streetText || streetText.trim().length < 2) {
+        badge.classList.add('hidden');
+        selectContainer.classList.remove('hidden');
+        const suggestionsList = document.getElementById('suggestions-list');
+        if (suggestionsList) suggestionsList.classList.add('hidden');
+        currentApiMatches = [];
+        lastStreetQuery = "";
+        return;
+    }
+
+    const normalizedInput = normalizeText(streetText);
+
+    // 1. FILTER SUGGESTIONS FROM LOCAL DATABASE (INSTANT)
+    const localMatches = BREMEN_STREETS_DATABASE.filter(item => {
+        const normName = normalizeText(item.name);
+        return normName.includes(normalizedInput);
+    });
+
+    // Sort: Prefix matches first
+    localMatches.sort((a, b) => {
+        const aNorm = normalizeText(a.name);
+        const bNorm = normalizeText(b.name);
+        const aStarts = aNorm.startsWith(normalizedInput);
+        const bStarts = bNorm.startsWith(normalizedInput);
+        
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
+        return a.name.localeCompare(b.name);
+    });
+
+    // Render local matches instantly along with any cached API matches
+    renderSuggestions(localMatches, currentApiMatches);
+
+    // 2. TRIGGER LIVE DEBUNCED OSM NOMINATIM SEARCH FOR COMPREHENSIVENESS
+    if (streetText.trim().length >= 3) {
+        clearTimeout(apiDebounceTimeout);
+        apiDebounceTimeout = setTimeout(() => {
+            fetchBremenStreetsFromAPI(streetText, localMatches);
+        }, 350);
+    }
+
+    // 3. FALLBACK PATTERN DETECTION FOR ACTIVE TYPING / BACKUP DIRECT MATCHING
     let detectedWohnlage = null;
     
-    // Check if there is an exact match in the database
+    // Check if there is an exact match in the local database
     const exactMatch = BREMEN_STREETS_DATABASE.find(item => normalizeText(item.name) === normalizedInput);
     if (exactMatch) {
         detectedWohnlage = exactMatch.wohnlage;
