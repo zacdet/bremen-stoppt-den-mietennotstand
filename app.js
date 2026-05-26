@@ -219,10 +219,11 @@ const BREMEN_STREETS = {
 function detectWohnlage(streetText) {
     const badge = document.getElementById('detection-badge');
     const select = document.getElementById('wohnlage-select');
+    const selectContainer = document.getElementById('wohnlage-select-container');
     
     if (!streetText || streetText.trim().length < 3) {
         badge.classList.add('hidden');
-        select.disabled = false; // Re-enable selection if empty
+        selectContainer.classList.remove('hidden');
         return;
     }
 
@@ -245,16 +246,27 @@ function detectWohnlage(streetText) {
 
     if (detectedWohnlage) {
         select.value = detectedWohnlage;
-        select.disabled = true; // Lock dropdown so user doesn't have to manually adjust it!
+        
+        // HIDE manual selection container completely!
+        selectContainer.classList.add('hidden');
+        
+        // Render a gorgeous read-only card in the badge area
+        const title = detectedWohnlage === 'einfach' ? 'Einfache Wohnlage' : detectedWohnlage === 'normal' ? 'Normale Wohnlage' : 'Gute Wohnlage';
+        const colorClass = detectedWohnlage === 'einfach' ? 'bg-amber-50 text-amber-800 border-amber-200' : detectedWohnlage === 'normal' ? 'bg-blue-50 text-blue-800 border-blue-200' : 'bg-emerald-50 text-emerald-800 border-emerald-200';
+        
         badge.innerHTML = `
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm animate-pulse">
-                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                Adresse erkannt: ${detectedWohnlage === 'einfach' ? 'Einfache' : detectedWohnlage === 'normal' ? 'Normale' : 'Gute'} Wohnlage (Gesperrt & Automatisch)
-            </span>
+            <div class="p-3 rounded-xl border ${colorClass} text-xs font-semibold space-y-1">
+                <div class="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[10px]">
+                    <svg class="w-3.5 h-3.5 animate-bounce" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    Adresse automatisch zugeordnet
+                </div>
+                <div>${title} (${streetText})</div>
+            </div>
         `;
         badge.classList.remove('hidden');
     } else {
-        select.disabled = false; // Fallback: keep enabled if no street is recognized
+        // Show manual select container as fallback
+        selectContainer.classList.remove('hidden');
         badge.classList.add('hidden');
     }
 }
