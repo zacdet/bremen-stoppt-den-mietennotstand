@@ -114,59 +114,106 @@ function switchTab(button, tabId) {
 
 
 // ==========================================
-// 5. BREMEN STREETS TO WOHNLAGE LOOKUP DICTIONARY
+// 5. EXTENSIVE BREMEN STREETS TO WOHNLAGE LOOKUP DICTIONARY
 // ==========================================
 const BREMEN_STREETS = {
-    // Einfache Wohnlagen
+    // === EINFACHE WOHNLAGEN ===
     "gropelinger": "einfach",
     "gropelingen": "einfach",
     "tenever": "einfach",
     "vahr": "einfach",
-    "ottersberger": "einfach",
-    "lindenhof": "einfach",
-    "donaustra": "einfach",
+    "blockdiek": "einfach",
+    "huchting": "einfach",
+    "blumenthal": "einfach",
+    "oslebshausen": "einfach",
     "oslebshaus": "einfach",
-    "schiffbauer": "einfach",
-    "havanna": "einfach",
-    "blomberger": "einfach",
+    "osterholz": "einfach",
     "kattenturm": "einfach",
-    "lussi": "einfach",
-    "neuenland": "einfach",
+    "kattenesch": "einfach",
+    "arsten": "einfach",
+    "luessum": "einfach",
+    "lussum": "einfach",
+    "lindenhof": "einfach",
+    "schiffbauer": "einfach",
+    "donaustra": "einfach",
+    "blomberger": "einfach",
+    "neu-wilsen": "einfach",
+    "wulsdorf": "einfach",
+    "leher": "einfach",
+    "teneverstr": "einfach",
+    "kobusstra": "einfach",
 
-    // Normale Wohnlagen
+    // === NORMALE WOHNLAGEN ===
     "neustadt": "normal",
     "findorff": "normal",
-    "woltmershaus": "normal",
+    "walle": "normal",
     "woltmershausen": "normal",
+    "woltmershaus": "normal",
+    "hemelingen": "normal",
+    "hastedt": "normal",
+    "vegack": "normal",
+    "vegesack": "normal",
+    "lesum": "normal",
+    "utbremen": "normal",
+    "buntentor": "normal",
+    "huckelriede": "normal",
+    "sebaldsbrueck": "normal",
+    "sebaldsbruck": "normal",
+    "arbergen": "normal",
+    "mahndorf": "normal",
+    "habhausen": "normal",
+    "burglesum": "normal",
+    "grohn": "normal",
+    "aumund": "normal",
+    "farge": "normal",
+    "lankener": "normal",
     "kornstra": "normal",
     "pappelstra": "normal",
     "gastfeld": "normal",
-    "hemelingen": "normal",
-    "lesum": "normal",
-    "vegesack": "normal",
-    "hastedt": "normal",
-    "walle": "normal",
     "steffensweg": "normal",
     "humboldt": "normal",
-    "außer der schleifmühle": "normal",
+    "schleifmuehle": "normal",
+    "schleifmuhle": "normal",
+    "waller": "normal",
+    "findorffstr": "normal",
+    "neustadts": "normal",
+    "rheinstr": "normal",
+    "westerstr": "normal",
+    "langemarckstr": "normal",
 
-    // Gute Wohnlagen
+    // === GUTE WOHNLAGEN ===
     "schwachhauser": "gut",
     "schwachhausen": "gut",
     "parkallee": "gut",
     "am wall": "gut",
     "ostertor": "gut",
     "steintor": "gut",
+    "viertel": "gut",
     "horn-lehe": "gut",
+    "lehester": "gut",
     "oberneuland": "gut",
+    "borgfeld": "gut",
+    "riensberg": "gut",
+    "barkhof": "gut",
+    "gete": "gut",
+    "peterswerder": "gut",
     "werdersee": "gut",
     "teerhof": "gut",
     "uberseestadt": "gut",
     "überseestadt": "gut",
-    "riensberg": "gut",
-    "barkhof": "gut",
-    "buergermeister-spitta": "gut",
-    "contrescarpe": "gut"
+    "mitte": "gut",
+    "altstadt": "gut",
+    "schoenebeck": "gut",
+    "schonebeck": "gut",
+    "spitta": "gut",
+    "contrescarpe": "gut",
+    "osterdeich": "gut",
+    "hansaallee": "gut",
+    "marcusallee": "gut",
+    "wachmann": "gut",
+    "herdentor": "gut",
+    "fedelhoeren": "gut",
+    "fedelhoeren": "gut"
 };
 
 function detectWohnlage(streetText) {
@@ -175,6 +222,7 @@ function detectWohnlage(streetText) {
     
     if (!streetText || streetText.trim().length < 3) {
         badge.classList.add('hidden');
+        select.disabled = false; // Re-enable selection if empty
         return;
     }
 
@@ -197,14 +245,16 @@ function detectWohnlage(streetText) {
 
     if (detectedWohnlage) {
         select.value = detectedWohnlage;
+        select.disabled = true; // Lock dropdown so user doesn't have to manually adjust it!
         badge.innerHTML = `
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm animate-pulse">
                 <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                Adresse erkannt: ${detectedWohnlage === 'einfach' ? 'Einfache' : detectedWohnlage === 'normal' ? 'Normale' : 'Gute'} Wohnlage!
+                Adresse erkannt: ${detectedWohnlage === 'einfach' ? 'Einfache' : detectedWohnlage === 'normal' ? 'Normale' : 'Gute'} Wohnlage (Gesperrt & Automatisch)
             </span>
         `;
         badge.classList.remove('hidden');
     } else {
+        select.disabled = false; // Fallback: keep enabled if no street is recognized
         badge.classList.add('hidden');
     }
 }
@@ -222,6 +272,7 @@ function checkBremenRent() {
     const resultPlaceholder = document.getElementById('result-placeholder');
     const resultOutput = document.getElementById('result-output');
 
+    // Read value from dropdown (even if disabled)
     const wohnlage = wohnlageSelect.value;
     const baujahr = baujahrSelect.value;
     const flatSize = parseFloat(flatSizeInput.value);
