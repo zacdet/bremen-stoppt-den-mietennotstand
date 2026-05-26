@@ -104,7 +104,6 @@ function switchTab(button, tabId) {
     for (let panel of allPanels) {
         if (panel.id === tabId) {
             panel.classList.remove('hidden');
-            // Add a small fade-in animation
             panel.classList.add('animate-[fadeIn_0.3s_ease-out]');
         } else {
             panel.classList.add('hidden');
@@ -115,100 +114,266 @@ function switchTab(button, tabId) {
 
 
 // ==========================================
-// 5. INTERAKTIVER MIET-CHECK CALCULATOR
+// 5. BREMEN STREETS TO WOHNLAGE LOOKUP DICTIONARY
 // ==========================================
-function calculateRent() {
-    const comparisonInput = document.getElementById('comparison-rent');
-    const flatSizeInput = document.getElementById('flat-size');
-    const actualRentInput = document.getElementById('actual-rent');
-    
-    const resultPlaceholder = document.getElementById('result-placeholder');
-    const resultOutput = document.getElementById('result-output');
-    
-    const comparisonVal = parseFloat(comparisonInput.value);
-    const flatSizeVal = parseFloat(flatSizeInput.value);
-    const actualRentVal = parseFloat(actualRentInput.value);
+const BREMEN_STREETS = {
+    // Einfache Wohnlagen
+    "gropelinger": "einfach",
+    "gropelingen": "einfach",
+    "tenever": "einfach",
+    "vahr": "einfach",
+    "ottersberger": "einfach",
+    "lindenhof": "einfach",
+    "donaustra": "einfach",
+    "oslebshaus": "einfach",
+    "schiffbauer": "einfach",
+    "havanna": "einfach",
+    "blomberger": "einfach",
+    "kattenturm": "einfach",
+    "lussi": "einfach",
+    "neuenland": "einfach",
 
-    // Form Validation
-    if (isNaN(comparisonVal) || isNaN(flatSizeVal) || isNaN(actualRentVal) || comparisonVal <= 0 || flatSizeVal <= 0 || actualRentVal <= 0) {
-        alert("Bitte füllen Sie alle Felder mit gültigen Zahlen über Null aus.");
+    // Normale Wohnlagen
+    "neustadt": "normal",
+    "findorff": "normal",
+    "woltmershaus": "normal",
+    "woltmershausen": "normal",
+    "kornstra": "normal",
+    "pappelstra": "normal",
+    "gastfeld": "normal",
+    "hemelingen": "normal",
+    "lesum": "normal",
+    "vegesack": "normal",
+    "hastedt": "normal",
+    "walle": "normal",
+    "steffensweg": "normal",
+    "humboldt": "normal",
+    "außer der schleifmühle": "normal",
+
+    // Gute Wohnlagen
+    "schwachhauser": "gut",
+    "schwachhausen": "gut",
+    "parkallee": "gut",
+    "am wall": "gut",
+    "ostertor": "gut",
+    "steintor": "gut",
+    "horn-lehe": "gut",
+    "oberneuland": "gut",
+    "werdersee": "gut",
+    "teerhof": "gut",
+    "uberseestadt": "gut",
+    "überseestadt": "gut",
+    "riensberg": "gut",
+    "barkhof": "gut",
+    "buergermeister-spitta": "gut",
+    "contrescarpe": "gut"
+};
+
+function detectWohnlage(streetText) {
+    const badge = document.getElementById('detection-badge');
+    const select = document.getElementById('wohnlage-select');
+    
+    if (!streetText || streetText.trim().length < 3) {
+        badge.classList.add('hidden');
         return;
     }
 
-    // Calculations
-    const actualRentPerSqm = actualRentVal / flatSizeVal;
-    const allowedRentTotal = comparisonVal * flatSizeVal;
-    const percentageDifference = ((actualRentPerSqm - comparisonVal) / comparisonVal) * 100;
+    const normalizedInput = streetText.toLowerCase()
+        .replace(/ä/g, 'a')
+        .replace(/ö/g, 'o')
+        .replace(/ü/g, 'u')
+        .replace(/ß/g, 'ss')
+        .trim();
+
+    let detectedWohnlage = null;
+
+    // Check matches in dictionary
+    for (let key in BREMEN_STREETS) {
+        if (normalizedInput.includes(key)) {
+            detectedWohnlage = BREMEN_STREETS[key];
+            break;
+        }
+    }
+
+    if (detectedWohnlage) {
+        select.value = detectedWohnlage;
+        badge.innerHTML = `
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                Adresse erkannt: ${detectedWohnlage === 'einfach' ? 'Einfache' : detectedWohnlage === 'normal' ? 'Normale' : 'Gute'} Wohnlage!
+            </span>
+        `;
+        badge.classList.remove('hidden');
+    } else {
+        badge.classList.add('hidden');
+    }
+}
+
+
+// ==========================================
+// 6. DETAILED BREMEN MIET-CHECK LOGIC
+// ==========================================
+function checkBremenRent() {
+    const wohnlageSelect = document.getElementById('wohnlage-select');
+    const baujahrSelect = document.getElementById('baujahr-select');
+    const flatSizeInput = document.getElementById('flat-size-input');
+    const actualKaltmieteInput = document.getElementById('actual-kaltmiete');
     
-    // Elements to update
+    const resultPlaceholder = document.getElementById('result-placeholder');
+    const resultOutput = document.getElementById('result-output');
+
+    const wohnlage = wohnlageSelect.value;
+    const baujahr = baujahrSelect.value;
+    const flatSize = parseFloat(flatSizeInput.value);
+    const actualKaltmiete = parseFloat(actualKaltmieteInput.value);
+
+    // Form validation
+    if (!wohnlage) {
+        alert("Bitte wählen oder ermitteln Sie die Wohnlage Ihrer Straße in Schritt 1.");
+        return;
+    }
+    if (isNaN(flatSize) || flatSize <= 0) {
+        alert("Bitte geben Sie eine gültige Wohnfläche in m² an (Schritt 2).");
+        return;
+    }
+    if (isNaN(actualKaltmiete) || actualKaltmiete <= 0) {
+        alert("Bitte geben Sie Ihre monatliche Nettokaltmiete in € an (Schritt 4).");
+        return;
+    }
+
+    // --- STEP 2: Basis-Nettokaltmiete aus Bremen Mietspiegeltabelle ---
+    let basismiete = 7.50; // Standardfall Normal
+
+    if (baujahr === "alt") { // Bis 1918
+        if (wohnlage === "einfach") basismiete = 6.20;
+        else if (wohnlage === "normal") basismiete = 7.50;
+        else if (wohnlage === "gut") basismiete = 9.20;
+    } 
+    else if (baujahr === "nachkrieg") { // 1949-1969
+        if (wohnlage === "einfach") basismiete = 5.80;
+        else if (wohnlage === "normal") basismiete = 6.80;
+        else if (wohnlage === "gut") basismiete = 8.00;
+    } 
+    else if (baujahr === "modern") { // 1970-1990
+        if (wohnlage === "einfach") basismiete = 6.50;
+        else if (wohnlage === "normal") basismiete = 7.50;
+        else if (wohnlage === "gut") basismiete = 8.80;
+    } 
+    else if (baujahr === "neu") { // 1991-2010
+        if (wohnlage === "einfach") basismiete = 7.50;
+        else if (wohnlage === "normal") basismiete = 8.80;
+        else if (wohnlage === "gut") basismiete = 10.50;
+    } 
+    else if (baujahr === "neubau") { // Nach 2010
+        if (wohnlage === "einfach") basismiete = 9.00;
+        else if (wohnlage === "normal") basismiete = 10.50;
+        else if (wohnlage === "gut") basismiete = 12.50;
+    }
+
+    // Flat size scaling (Small apartments have higher per sqm rates)
+    if (flatSize < 40) {
+        basismiete *= 1.10; // +10%
+    } else if (flatSize > 85) {
+        basismiete *= 0.95; // -5%
+    }
+
+    // --- STEP 3: Zu- und Abschläge (Ausstattung) ---
+    let extraSqmCharge = 0.00;
+    
+    // Zuschläge (+0.40 € pro m² pro Merkmal)
+    if (document.getElementById('feature-kitchen').checked) extraSqmCharge += 0.40;
+    if (document.getElementById('feature-bath').checked) extraSqmCharge += 0.40;
+    if (document.getElementById('feature-balcony').checked) extraSqmCharge += 0.40;
+    if (document.getElementById('feature-energy').checked) extraSqmCharge += 0.40;
+
+    // Abschläge (-0.40 € pro m² pro Merkmal)
+    if (document.getElementById('feature-no-barrier').checked) extraSqmCharge -= 0.40;
+    if (document.getElementById('feature-noisy').checked) extraSqmCharge -= 0.40;
+
+    // Final Computed Comparison Rent (ortsübliche Vergleichsmiete)
+    const computedComparisonRent = basismiete + extraSqmCharge;
+    const allowedRentSqmBremse = computedComparisonRent * 1.10; // Mietpreisbremse (+10% limit)
+    const allowedRentTotalBremse = allowedRentSqmBremse * flatSize;
+    
+    const actualRentPerSqm = actualKaltmiete / flatSize;
+    const percentageDifference = ((actualRentPerSqm - computedComparisonRent) / computedComparisonRent) * 100;
+
+    // --- RENDER RESULTS ---
     const resultBadge = document.getElementById('result-badge');
     const actualRentSqmSpan = document.getElementById('actual-rent-per-sqm');
+    const computedCompRentSpan = document.getElementById('computed-comparison-rent');
     const allowedRentTotalSpan = document.getElementById('allowed-rent-total');
     const excessPercentage = document.getElementById('excess-percentage');
     const excessContainer = document.getElementById('excess-container');
     const resultDescription = document.getElementById('result-description');
     const excessLabel = document.getElementById('excess-label');
 
-    // Update numbers
+    // Values rendering
     actualRentSqmSpan.innerText = actualRentPerSqm.toFixed(2);
-    allowedRentTotalSpan.innerText = allowedRentTotal.toFixed(2) + " €";
-    
-    // Reset classes
+    computedCompRentSpan.innerText = computedComparisonRent.toFixed(2);
+    allowedRentTotalSpan.innerText = allowedRentTotalBremse.toFixed(2);
+
+    // Reset styles
     resultBadge.className = "inline-flex px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider";
     excessPercentage.className = "text-xl font-bold";
 
-    // Check legality levels
     if (percentageDifference > 50) {
-        // MIETWUCHER
+        // MIETWUCHER (§ 291 StGB)
         resultBadge.innerText = "🚨 Verdacht auf Mietwucher";
-        resultBadge.classList.add('bg-red-900/50', 'text-red-300');
-        excessPercentage.innerText = `+${percentageDifference.toFixed(1)} % über Limit`;
+        resultBadge.classList.add('bg-red-950', 'text-red-400', 'border', 'border-red-800/30');
+        excessPercentage.innerText = `+${percentageDifference.toFixed(1)} % über Richtwert`;
         excessPercentage.classList.add('text-red-500');
         excessLabel.innerText = "Überschreitung:";
         excessContainer.classList.remove('hidden');
-        resultDescription.innerHTML = `<strong>Achtung:</strong> Ihre Miete liegt mehr als 50% über der Vergleichsmiete. Nach § 291 StGB liegt hier ein <strong>strafbarer Mietwucher</strong> nahe. Wir empfehlen dringend, eine offizielle Mieterberatung aufzusuchen.`;
+        resultDescription.innerHTML = `<strong>Achtung:</strong> Ihre Miete liegt <strong>${percentageDifference.toFixed(1)}% über der ortsüblichen Vergleichsmiete</strong>. Nach § 291 StGB liegt hier der Verdacht auf **Mietwucher** nahe. Dies ist ein Straftatbestand. Suchen Sie sofort eine Rechtsberatung auf!`;
     } 
     else if (percentageDifference > 20) {
-        // MIETPREISÜBERHÖHUNG
+        // MIETPREISÜBERHÖHUNG (§ 5 WiStG)
         resultBadge.innerText = "⚠️ Mietpreisüberhöhung";
-        resultBadge.classList.add('bg-yellow-900/50', 'text-yellow-300');
-        excessPercentage.innerText = `+${percentageDifference.toFixed(1)} % über Limit`;
+        resultBadge.classList.add('bg-yellow-950', 'text-yellow-400', 'border', 'border-yellow-800/30');
+        excessPercentage.innerText = `+${percentageDifference.toFixed(1)} % über Richtwert`;
         excessPercentage.classList.add('text-yellow-500');
         excessLabel.innerText = "Überschreitung:";
         excessContainer.classList.remove('hidden');
-        resultDescription.innerHTML = `<strong>Hinweis:</strong> Ihre Miete liegt über 20% über der Vergleichsmiete. Dies stellt nach § 5 Wirtschaftsstrafgesetz eine <strong>Ordnungswidrigkeit</strong> dar. Melden Sie diesen Fall bei der Taskforce Wohnen!`;
+        resultDescription.innerHTML = `<strong>Hinweis:</strong> Ihre Miete überschreitet die ortsübliche Vergleichsmiete um <strong>${percentageDifference.toFixed(1)}%</strong>. Da dies über dem 20%-Limit liegt, liegt eine Ordnungswidrigkeit nach <strong>§ 5 WiStG</strong> nahe. Sie sollten aktiv werden!`;
+    } 
+    else if (percentageDifference > 10) {
+        // MIETPREISBREMSE VERSTOẞ (+10% limit)
+        resultBadge.innerText = "🛑 Mietpreisbremse verletzt";
+        resultBadge.classList.add('bg-orange-950', 'text-orange-400', 'border', 'border-orange-800/30');
+        excessPercentage.innerText = `+${percentageDifference.toFixed(1)} % über Richtwert`;
+        excessPercentage.classList.add('text-orange-500');
+        excessLabel.innerText = "Überschreitung:";
+        excessContainer.classList.remove('hidden');
+        resultDescription.innerHTML = `<strong>Achtung:</strong> Ihre Miete liegt <strong>${percentageDifference.toFixed(1)}% über dem Durchschnitt</strong>. In Bremen gilt die **Mietpreisbremse**: Bei Neuverträgen darf die Miete maximal 10% über dem Wert liegen. Ihre Miete überschreitet diese Grenze!`;
     } 
     else if (percentageDifference > 0) {
-        // Geringfügig erhöht
+        // Geringfügig erhöht aber im Toleranzbereich
         resultBadge.innerText = "⚠️ Leicht erhöht";
-        resultBadge.classList.add('bg-orange-900/30', 'text-orange-300');
+        resultBadge.classList.add('bg-slate-800', 'text-slate-300', 'border', 'border-slate-700/50');
         excessPercentage.innerText = `+${percentageDifference.toFixed(1)} %`;
-        excessPercentage.classList.add('text-orange-400');
+        excessPercentage.classList.add('text-amber-400');
         excessLabel.innerText = "Erhöhung:";
         excessContainer.classList.remove('hidden');
-        resultDescription.innerHTML = `Ihre Miete ist zwar höher als der Durchschnitt, liegt jedoch noch unter der gesetzlichen Toleranzgrenze von 20%. Beobachten Sie künftige Mieterhöhungen aufmerksam.`;
+        resultDescription.innerHTML = `Ihre Miete liegt <strong>${percentageDifference.toFixed(1)}%</strong> über dem Durchschnittswert. Dies ist bei laufenden Altverträgen rechtlich zulässig, solange keine Mietpreisbremse greift und die Kappungsgrenze eingehalten wird.`;
     } 
     else {
-        // Legal
-        resultBadge.innerText = "✅ Miete im gesetzlichen Rahmen";
-        resultBadge.classList.add('bg-emerald-950', 'text-emerald-400');
-        if (percentageDifference === 0) {
-            excessPercentage.innerText = "Punktlandung (0%)";
-            excessPercentage.classList.add('text-emerald-400');
-        } else {
-            excessPercentage.innerText = `${percentageDifference.toFixed(1)} % günstiger`;
-            excessPercentage.classList.add('text-emerald-400');
-        }
+        // Fair / Günstig
+        resultBadge.innerText = "✅ Miete im fairen Bereich";
+        resultBadge.classList.add('bg-emerald-950', 'text-emerald-400', 'border', 'border-emerald-800/30');
+        const absDiff = Math.abs(percentageDifference);
+        excessPercentage.innerText = `-${absDiff.toFixed(1)} % günstiger`;
+        excessPercentage.classList.add('text-emerald-400');
         excessLabel.innerText = "Ersparnis:";
         excessContainer.classList.remove('hidden');
-        resultDescription.innerHTML = `Herzlichen Glückwunsch! Ihre Miete entspricht den Richtwerten des Mietspiegels oder liegt sogar darunter. Sie zahlen einen fairen Preis.`;
+        resultDescription.innerHTML = `Hervorragend! Ihre Kaltmiete liegt um <strong>${absDiff.toFixed(1)}% unter der errechneten Vergleichsmiete</strong>. Sie bezahlen eine faire Miete nach dem Bremer Mietspiegel.`;
     }
 
-    // Toggle visibility
+    // Toggle panels
     resultPlaceholder.classList.add('hidden');
     resultOutput.classList.remove('hidden');
     
-    // Smooth scroll result into view on mobile
+    // Smooth scroll result on mobile
     if (window.innerWidth < 768) {
         document.getElementById('mietcheck-result-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
